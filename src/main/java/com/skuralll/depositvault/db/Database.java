@@ -27,7 +27,7 @@ public class Database {
   }
 
   // open sql connection
-  public boolean openConnection() {
+  public boolean connect() {
     try {
       Class.forName("com.mysql.jdbc.Driver");
       this.connection = DriverManager.getConnection(

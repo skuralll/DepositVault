@@ -72,7 +72,7 @@ public final class DepositVault extends JavaPlugin {
   // set up database
   private boolean setupDatabase() {
     Database _db = new Database("mariaDB", 3306, "root", "root", "deposit_vault");
-    if (_db.openConnection()) {
+    if (_db.connect()) {
       db = _db;
       return true;
     } else {
