@@ -48,6 +48,7 @@ public class Database {
   // create tables if not exist
   private void createTables() throws SQLException {
     Statement statement = connection.createStatement();
+
     // db meta table
     statement.executeUpdate(
         "CREATE TABLE IF NOT EXISTS `meta` (" +
@@ -58,6 +59,15 @@ public class Database {
     statement.executeUpdate(
         "INSERT INTO `meta` SELECT 'dbversion','" + DB_VERSION + "' "
             + " WHERE NOT EXISTS (SELECT `key` FROM `meta` WHERE `key` = 'dbversion')");
+
+    // user table
+    statement.executeUpdate(
+        "CREATE TABLE IF NOT EXISTS `user` (" +
+            "`user_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+            "`uuid` CHAR(36) NOT NULL," +
+            "`name` VARCHAR(16) NOT NULL" +
+            ")"
+    );
   }
 
 }
