@@ -52,8 +52,8 @@ public class Database {
     // db meta table
     statement.executeUpdate(
         "CREATE TABLE IF NOT EXISTS `meta` (" +
-            "`key`   TEXT NOT NULL," +
-            "`value` TEXT NOT NULL" +
+            "`key`   TEXT PRIMARY KEY," +
+            "`value` TEXT" +
             ")"
     );
     statement.executeUpdate(
@@ -64,8 +64,23 @@ public class Database {
     statement.executeUpdate(
         "CREATE TABLE IF NOT EXISTS `user` (" +
             "`user_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-            "`uuid` CHAR(36) NOT NULL," +
-            "`name` VARCHAR(16) NOT NULL" +
+            "`uuid` CHAR(36)," +
+            "`name` VARCHAR(16)" +
+            ")"
+    );
+
+    // lock-data table
+    statement.executeUpdate(
+        "CREATE TABLE IF NOT EXISTS `locks` (" +
+            "`lock_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
+            "`user_id` INT," +
+            "`world` VARCHAR(50)," +
+            "`x` INT," +
+            "`y` INT," +
+            "`z` INT," +
+            "`interval` INT," +
+            "`payment` DOUBLE," +
+            "`deposit` DOUBLE" +
             ")"
     );
   }
