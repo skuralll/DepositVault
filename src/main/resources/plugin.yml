@@ -1,0 +1,10 @@
+name: DepositVault
+version: '${version}'
+main: com.skuralll.depositvault.DepositVault
+api-version: 1.19
+authors: [ skuralll ]
+website: https://skuralll.com/
+
+commands:
+  dvault:
+    description: "/dvault help - Show helps."
