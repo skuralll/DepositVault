@@ -9,7 +9,10 @@ public class InfoCommand extends SubCommand {
 
   private final PluginDescriptionFile description;
 
+  protected CommandExecuter executer = CommandExecuter.BOTH;
+
   public InfoCommand() {
+    executer = CommandExecuter.BOTH;
     description = DepositVault.getInstance().getDescription();
   }
 
