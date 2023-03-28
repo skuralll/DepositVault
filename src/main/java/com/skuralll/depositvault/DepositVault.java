@@ -1,6 +1,8 @@
 package com.skuralll.depositvault;
 
+import com.skuralll.depositvault.command.CommandBase;
 import com.skuralll.depositvault.db.Database;
+import com.skuralll.depositvault.listener.PlayerListener;
 import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -40,6 +42,13 @@ public final class DepositVault extends JavaPlugin {
       getServer().getPluginManager().disablePlugin(this);
       return;
     }
+
+    // register events
+    getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
+    // register commands
+    CommandBase commandBase = new CommandBase();
+    getCommand("dvault").setExecutor(commandBase);
   }
 
   @Override
