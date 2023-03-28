@@ -1,5 +1,7 @@
 package com.skuralll.depositvault;
 
+import com.skuralll.depositvault.cache.CacheStore;
+import com.skuralll.depositvault.command.CheckCommand;
 import com.skuralll.depositvault.command.CommandBase;
 import com.skuralll.depositvault.command.InfoCommand;
 import com.skuralll.depositvault.config.ConfigLoader;
@@ -27,6 +29,8 @@ public final class DepositVault extends JavaPlugin {
   private Database db;
   // Config Handler
   private ConfigLoader config;
+  // Cache Store
+  private CacheStore cache;
 
   @Override
   public void onEnable() {
@@ -34,6 +38,8 @@ public final class DepositVault extends JavaPlugin {
 
     saveDefaultConfig();
     config = new ConfigLoader();
+
+    cache = new CacheStore();
 
     // set up vault
     if (!setupEconomy()) {
@@ -58,6 +64,7 @@ public final class DepositVault extends JavaPlugin {
     // register commands
     CommandBase commandBase = new CommandBase();
     commandBase.register("info", new InfoCommand());
+    commandBase.register("check", new CheckCommand());
     getCommand("dvault").setExecutor(commandBase);
   }
 
@@ -112,4 +119,7 @@ public final class DepositVault extends JavaPlugin {
     return instance;
   }
 
+  public CacheStore getCacheStore() {
+    return cache;
+  }
 }
