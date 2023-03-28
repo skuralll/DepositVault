@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CommandBase implements CommandExecutor {
 
@@ -29,6 +30,18 @@ public class CommandBase implements CommandExecutor {
     if (sub == null) {
       return false;
     }
+
+    // Check Executer Type
+    if (sender instanceof Player) {
+      if (sub.getExecuter() == CommandExecuter.CONSOLE) {
+        return false;
+      }
+    } else {
+      if (sub.getExecuter() == CommandExecuter.PLAYER) {
+        return false;
+      }
+    }
+
     boolean result = sub.onCommand(sender, args);
 
     return result;
