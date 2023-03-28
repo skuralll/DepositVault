@@ -5,3 +5,9 @@ db:
   user: root
   password: root
   database: deposit_vault
+# Lock configuration
+# Ex. You need to pay 100 per day, and you need to make a deposit of at least 100 at the beginning.
+lock:
+  interval: 86400
+  payment: 100
+  min_pay: 100
