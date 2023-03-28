@@ -1,6 +1,9 @@
 package com.skuralll.depositvault;
 
 import com.skuralll.depositvault.command.CommandBase;
+import com.skuralll.depositvault.command.InfoCommand;
+import com.skuralll.depositvault.config.ConfigLoader;
+import com.skuralll.depositvault.config.DBConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.listener.PlayerListener;
 import java.util.logging.Logger;
@@ -12,19 +15,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class DepositVault extends JavaPlugin {
 
   private static DepositVault instance = null;
-  // Database Handler
-  private static Database db;
-
-  private static final Logger log = Logger.getLogger("Minecraft");
 
   // Vault Economy API
-  private static Economy economy;
+  private Economy economy;
   // Vault Permission API
-  private static Permission permission;
+  private Permission permission;
+
+  // Logger
+  private final Logger log = Logger.getLogger("Minecraft");
+  // Database Handler
+  private Database db;
+  // Config Handler
+  private ConfigLoader config;
 
   @Override
   public void onEnable() {
     instance = this;
+
+    saveDefaultConfig();
+    config = new ConfigLoader();
 
     // set up vault
     if (!setupEconomy()) {
@@ -48,6 +57,7 @@ public final class DepositVault extends JavaPlugin {
 
     // register commands
     CommandBase commandBase = new CommandBase();
+    commandBase.register("info", new InfoCommand());
     getCommand("dvault").setExecutor(commandBase);
   }
 
@@ -80,7 +90,14 @@ public final class DepositVault extends JavaPlugin {
 
   // set up database
   private boolean setupDatabase() {
-    Database _db = new Database("mariaDB", 3306, "root", "root", "deposit_vault");
+    DBConfig db_config = config.getDBConfig();
+    Database _db = new Database(
+        db_config.getHost(),
+        db_config.getPort(),
+        db_config.getUser(),
+        db_config.getPassword(),
+        db_config.getDatabase()
+    );
     if (_db.connect()) {
       db = _db;
       return true;
