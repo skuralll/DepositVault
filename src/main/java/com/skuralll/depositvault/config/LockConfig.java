@@ -24,8 +24,8 @@ public class LockConfig extends Config {
     return payment;
   }
 
-  public double getMin_pay() {
+  public double getMinPay() {
     return min_pay;
   }
-  
+
 }
