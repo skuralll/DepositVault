@@ -69,6 +69,7 @@ public class PlayerListener implements Listener {
     // check command process
     if (check_cache.check(player.getUniqueId())) {
       event.setCancelled(true);
+      player.sendMessage(handler.getPurchaseCost().toString());
       return;
     }
   }
