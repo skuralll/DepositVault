@@ -7,6 +7,7 @@ import com.skuralll.depositvault.command.InfoCommand;
 import com.skuralll.depositvault.config.ConfigLoader;
 import com.skuralll.depositvault.config.DBConfig;
 import com.skuralll.depositvault.db.Database;
+import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.listener.PlayerListener;
 import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
@@ -31,6 +32,8 @@ public final class DepositVault extends JavaPlugin {
   private ConfigLoader config;
   // Cache Store
   private CacheStore cache;
+  // Lock Handler
+  private LockHandler handler;
 
   @Override
   public void onEnable() {
@@ -58,14 +61,16 @@ public final class DepositVault extends JavaPlugin {
       return;
     }
 
-    // register events
-    getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+    handler = new LockHandler();
 
     // register commands
     CommandBase commandBase = new CommandBase();
     commandBase.register("info", new InfoCommand());
     commandBase.register("check", new CheckCommand());
     getCommand("dvault").setExecutor(commandBase);
+
+    // register events
+    getServer().getPluginManager().registerEvents(new PlayerListener(), this);
   }
 
   @Override
@@ -119,7 +124,19 @@ public final class DepositVault extends JavaPlugin {
     return instance;
   }
 
+  public ConfigLoader getConfigLoader() {
+    return config;
+  }
+
+  public Database getDatabase() {
+    return db;
+  }
+
   public CacheStore getCacheStore() {
     return cache;
+  }
+
+  public LockHandler getHandler() {
+    return handler;
   }
 }
