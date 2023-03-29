@@ -69,10 +69,15 @@ public class PlayerListener implements Listener {
 
     Player player = event.getPlayer();
     // check command process
+    boolean check_processed = handleCheckCommand(player, block.getLocation());
+    event.setCancelled(check_processed);
+  }
+
+  // Process CheckCommand
+  private boolean handleCheckCommand(Player player, Location location) {
     if (check_cache.check(player.getUniqueId())) {
-      event.setCancelled(true);
       DepositData deposit_data = handler.getPurchaseCost();
-      LockData lock_data = handler.getLockData(block.getLocation());
+      LockData lock_data = handler.getLockData(location);
       player.sendMessage("[Purchase Cost]");
       player.sendMessage("Interval: " + deposit_data.getInterval());
       player.sendMessage("Payment: " + deposit_data.getPayment());
@@ -86,8 +91,9 @@ public class PlayerListener implements Listener {
         player.sendMessage("Payment: " + deposit_data_locked.getPayment());
         player.sendMessage("Minimum Cost: " + deposit_data_locked.getMin_pay());
       }
-      return;
+      return true;
     }
+    return false;
   }
 
 }
