@@ -1,10 +1,16 @@
 package com.skuralll.depositvault.db;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.model.DepositData;
+import com.skuralll.depositvault.model.LockData;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.annotation.CheckForNull;
+import org.bukkit.Location;
 
 public class Database {
 
@@ -83,6 +89,40 @@ public class Database {
             "`deposit` DOUBLE" +
             ")"
     );
+  }
+
+  @CheckForNull
+  public LockData getLockData(Location location) {
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "SELECT * FROM `locks` WHERE `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?");
+      ps.setString(1, location.getWorld().getName());
+      ps.setInt(2, location.getBlockX());
+      ps.setInt(3, location.getBlockY());
+      ps.setInt(4, location.getBlockZ());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        DepositData deposi_data = new DepositData(
+            rs.getInt("interval"),
+            rs.getDouble("payment"),
+            rs.getDouble("deposit"),
+            0d
+        );
+        return new LockData(
+            rs.getInt("lock_id"),
+            rs.getInt("user_id"),
+            rs.getString("world"),
+            rs.getInt("x"),
+            rs.getInt("y"),
+            rs.getInt("z"),
+            deposi_data
+        );
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }

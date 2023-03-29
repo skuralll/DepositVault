@@ -23,4 +23,20 @@ public class DepositData {
         ", deposit=" + deposit +
         '}';
   }
+
+  public Integer getInterval() {
+    return interval;
+  }
+
+  public Double getPayment() {
+    return payment;
+  }
+
+  public Double getMin_pay() {
+    return min_pay;
+  }
+
+  public Double getDeposit() {
+    return deposit;
+  }
 }
