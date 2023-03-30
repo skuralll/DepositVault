@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.annotation.CheckForNull;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class Database {
 
@@ -58,7 +59,7 @@ public class Database {
     // db meta table
     statement.executeUpdate(
         "CREATE TABLE IF NOT EXISTS `meta` (" +
-            "`key`   TEXT PRIMARY KEY," +
+            "`key`   VARCHAR(32) PRIMARY KEY," +
             "`value` TEXT" +
             ")"
     );
@@ -70,7 +71,7 @@ public class Database {
     statement.executeUpdate(
         "CREATE TABLE IF NOT EXISTS `user` (" +
             "`user_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
-            "`uuid` CHAR(36)," +
+            "`uuid` CHAR(36) UNIQUE," +
             "`name` VARCHAR(16)" +
             ")"
     );
@@ -89,6 +90,24 @@ public class Database {
             "`deposit` DOUBLE" +
             ")"
     );
+  }
+
+  // update user data
+  public boolean createUserData(Player player) {
+    try {
+      Statement statement = connection.createStatement();
+      // update user data
+      PreparedStatement ps = connection.prepareStatement(
+          "INSERT INTO `user` (`uuid`, `name`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `name` = ?");
+      ps.setString(1, player.getUniqueId().toString());
+      ps.setString(2, player.getName());
+      ps.setString(3, player.getName());
+      ps.executeUpdate();
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
   @CheckForNull
@@ -123,6 +142,18 @@ public class Database {
       e.printStackTrace();
     }
     return null;
+  }
+
+  public boolean setLockData(Player player, Location location, DepositData depositData) {
+    try {
+      Statement statement = connection.createStatement();
+      createUserData(player);
+      // TODO
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
   }
 
 }

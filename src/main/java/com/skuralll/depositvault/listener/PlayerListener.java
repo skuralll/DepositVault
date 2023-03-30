@@ -4,6 +4,7 @@ import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.CheckCommandCache;
 import com.skuralll.depositvault.cache.LockCommandCache;
 import com.skuralll.depositvault.handler.LockHandler;
+import com.skuralll.depositvault.handler.LockResult;
 import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -83,7 +84,8 @@ public class PlayerListener implements Listener {
     Double deposit = lock_cache.pop(player.getUniqueId());
     if (deposit != null) {
       event.setCancelled(true);
-      handler.lock(player, deposit, block.getLocation());
+      LockResult result = handler.lock(player, deposit, block.getLocation());
+      player.sendMessage(result.toString());
       return;
     }
   }

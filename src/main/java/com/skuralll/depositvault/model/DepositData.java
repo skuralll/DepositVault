@@ -39,4 +39,8 @@ public class DepositData {
   public Double getDeposit() {
     return deposit;
   }
+
+  public void setDeposit(Double deposit) {
+    this.deposit = deposit;
+  }
 }

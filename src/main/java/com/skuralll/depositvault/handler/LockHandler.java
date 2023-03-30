@@ -53,9 +53,18 @@ public class LockHandler {
   }
 
   // lock inventory holder
-  public boolean lock(Player player, Double deposit, Location location) {
-    player.sendMessage("This is Lock Message");
-    return true;
+  public LockResult lock(Player player, Double deposit, Location location) {
+    // check locked or not
+    if (getLockData(location) != null)
+      return LockResult.LOCKED;
+    // check deposit
+    DepositData cost = getPurchaseCost();
+    if (deposit < cost.getMin_pay())
+      return LockResult.NOT_ENOUGH_DEPOSIT;
+    // lock process
+    cost.setDeposit(deposit);
+    boolean result = db.setLockData(player, location, cost);
+    return LockResult.SUCCESS;
   }
 
 }
