@@ -78,6 +78,8 @@ public class PlayerListener implements Listener {
     if (check_cache.check(player.getUniqueId())) {
       DepositData deposit_data = handler.getPurchaseCost();
       LockData lock_data = handler.getLockData(location);
+      player.sendMessage("[Status]");
+      player.sendMessage("Locked: " + (lock_data != null ? "Yes" : "No"));
       player.sendMessage("[Purchase Cost]");
       player.sendMessage("Interval: " + deposit_data.getInterval());
       player.sendMessage("Payment: " + deposit_data.getPayment());
