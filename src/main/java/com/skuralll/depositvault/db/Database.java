@@ -128,6 +128,23 @@ public class Database {
   }
 
   @CheckForNull
+  public String getUserName(Integer user_id) {
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "SELECT `name` FROM `user` WHERE `user_id` = ?");
+      ps.setInt(1, user_id);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        return rs.getString("user_id");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  @CheckForNull
   public LockData getLockData(Location location) {
     try {
       Statement statement = connection.createStatement();

@@ -25,6 +25,11 @@ public class LockHandler {
   public Integer getUserId(Player player) {
     return db.getUserId(player);
   }
+  
+  @CheckForNull
+  public String getUserName(int user_id) {
+    return db.getUserName(user_id);
+  }
 
   public DepositData getPurchaseCost() {
     return new DepositData(config.getInterval(), config.getPayment(), config.getMinPay(), 0d);
@@ -72,6 +77,10 @@ public class LockHandler {
     if (!result)
       return LockResult.SQL_ERROR;
     return LockResult.SUCCESS;
+  }
+
+  public boolean isOwner(Player player, LockData data) {
+    return data.getUserId() == getUserId(player);
   }
 
 }

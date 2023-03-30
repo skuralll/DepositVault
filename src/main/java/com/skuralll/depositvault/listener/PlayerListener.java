@@ -5,7 +5,9 @@ import com.skuralll.depositvault.cache.CheckCommandCache;
 import com.skuralll.depositvault.cache.LockCommandCache;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
+import com.skuralll.depositvault.model.LockData;
 import java.util.UUID;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -70,13 +72,14 @@ public class PlayerListener implements Listener {
       }
     }
 
+    Location location = block.getLocation();
     Player player = event.getPlayer();
     UUID uuid = player.getUniqueId();
 
     // check command process
     if (check_cache.check(uuid)) {
       event.setCancelled(true);
-      player.sendMessage(handler.getLockDataMessage(block.getLocation()));
+      player.sendMessage(handler.getLockDataMessage(location));
       return;
     }
 
@@ -84,9 +87,21 @@ public class PlayerListener implements Listener {
     Double deposit = lock_cache.pop(player.getUniqueId());
     if (deposit != null) {
       event.setCancelled(true);
-      LockResult result = handler.lock(player, deposit, block.getLocation());
+      LockResult result = handler.lock(player, deposit, location);
       player.sendMessage(result.toString());
       return;
+    }
+
+    // protect locked inventory-holder
+    LockData lock_data = handler.getLockData(location);
+    if (lock_data != null) {
+      if (!handler.isOwner(player, lock_data)) {
+        String owner_name = handler.getUserName(lock_data.getUserId());
+        if (owner_name == null)
+          owner_name = "Unknown";
+        player.sendMessage(ChatColor.RED + "This block is locked by " + owner_name + ".");
+        event.setCancelled(true);
+      }
     }
   }
 
