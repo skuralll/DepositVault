@@ -64,6 +64,8 @@ public class LockHandler {
     // lock process
     cost.setDeposit(deposit);
     boolean result = db.setLockData(player, location, cost);
+    if (!result)
+      return LockResult.SQL_ERROR;
     return LockResult.SUCCESS;
   }
 

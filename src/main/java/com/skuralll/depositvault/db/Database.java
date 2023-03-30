@@ -110,6 +110,22 @@ public class Database {
     return false;
   }
 
+  public Integer getUserId(Player player) {
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "SELECT `user_id` FROM `user` WHERE `uuid` = ?");
+      ps.setString(1, player.getUniqueId().toString());
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        return rs.getInt("user_id");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   @CheckForNull
   public LockData getLockData(Location location) {
     try {
@@ -145,10 +161,27 @@ public class Database {
   }
 
   public boolean setLockData(Player player, Location location, DepositData depositData) {
+    // check user data and lock data
+    createUserData(player);
+    Integer user_id = getUserId(player);
+    if (user_id == null)
+      return false;
+    if (getLockData(location) != null)
+      return false;
+    // query
     try {
       Statement statement = connection.createStatement();
-      createUserData(player);
-      // TODO
+      PreparedStatement ps = connection.prepareStatement(
+          "INSERT INTO `locks` (`user_id`, `world`, `x`, `y`, `z`, `interval`, `payment`, `deposit`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      ps.setInt(1, user_id);
+      ps.setString(2, location.getWorld().getName());
+      ps.setInt(3, location.getBlockX());
+      ps.setInt(4, location.getBlockY());
+      ps.setInt(5, location.getBlockZ());
+      ps.setInt(6, depositData.getInterval());
+      ps.setDouble(7, depositData.getPayment());
+      ps.setDouble(8, depositData.getDeposit());
+      ps.executeUpdate();
       return true;
     } catch (Exception e) {
       e.printStackTrace();
