@@ -45,11 +45,11 @@ public class LockData {
     return deposit_data;
   }
 
-  public int getLockID() {
+  public int getLockId() {
     return lock_id;
   }
 
-  public int getUserID() {
+  public int getUserId() {
     return user_id;
   }
 
