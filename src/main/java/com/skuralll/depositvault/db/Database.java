@@ -110,6 +110,7 @@ public class Database {
     return false;
   }
 
+  @CheckForNull
   public Integer getUserId(Player player) {
     try {
       Statement statement = connection.createStatement();

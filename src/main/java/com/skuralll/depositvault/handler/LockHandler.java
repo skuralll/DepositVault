@@ -21,6 +21,11 @@ public class LockHandler {
     db = plugin.getDatabase();
   }
 
+  @CheckForNull
+  public Integer getUserId(Player player) {
+    return db.getUserId(player);
+  }
+
   public DepositData getPurchaseCost() {
     return new DepositData(config.getInterval(), config.getPayment(), config.getMinPay(), 0d);
   }
