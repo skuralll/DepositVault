@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.command;
 
 import java.util.HashMap;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -34,11 +35,13 @@ public class CommandBase implements CommandExecutor {
     // Check Executer Type
     if (sender instanceof Player) {
       if (sub.getExecuter() == CommandExecuter.CONSOLE) {
-        return false;
+        sender.sendMessage(ChatColor.RED + "This command can only be executed by the console.");
+        return true;
       }
     } else {
       if (sub.getExecuter() == CommandExecuter.PLAYER) {
-        return false;
+        sender.sendMessage(ChatColor.RED + "This command can only be executed by a player.");
+        return true;
       }
     }
 
