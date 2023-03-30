@@ -1,10 +1,10 @@
 package com.skuralll.depositvault.listener;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.cache.CheckCache;
+import com.skuralll.depositvault.cache.CheckCommandCache;
+import com.skuralll.depositvault.cache.LockCommandCache;
 import com.skuralll.depositvault.handler.LockHandler;
-import com.skuralll.depositvault.model.DepositData;
-import com.skuralll.depositvault.model.LockData;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -22,12 +22,14 @@ public class PlayerListener implements Listener {
 
   private final DepositVault plugin;
   private final LockHandler handler;
-  private final CheckCache check_cache;
+  private final CheckCommandCache check_cache;
+  private final LockCommandCache lock_cache;
 
   public PlayerListener() {
     plugin = DepositVault.getInstance();
     handler = plugin.getHandler();
-    check_cache = plugin.getCacheStore().getCheckCache();
+    check_cache = plugin.getCacheStore().getCheckCommandCache();
+    lock_cache = plugin.getCacheStore().getLockCommandCache();
   }
 
   @EventHandler
@@ -68,34 +70,22 @@ public class PlayerListener implements Listener {
     }
 
     Player player = event.getPlayer();
-    // check command process
-    boolean check_processed = handleCheckCommand(player, block.getLocation());
-    event.setCancelled(check_processed);
-  }
+    UUID uuid = player.getUniqueId();
 
-  // Process CheckCommand
-  private boolean handleCheckCommand(Player player, Location location) {
-    if (check_cache.check(player.getUniqueId())) {
-      DepositData deposit_data = handler.getPurchaseCost();
-      LockData lock_data = handler.getLockData(location);
-      player.sendMessage("[Status]");
-      player.sendMessage("Locked: " + (lock_data != null ? "Yes" : "No"));
-      player.sendMessage("[Purchase Cost]");
-      player.sendMessage("Interval: " + deposit_data.getInterval());
-      player.sendMessage("Payment: " + deposit_data.getPayment());
-      player.sendMessage("Minimum Cost: " + deposit_data.getMin_pay());
-      if (lock_data != null) {
-        DepositData deposit_data_locked = lock_data.getDepositData();
-        player.sendMessage("[Maintenance Cost]");
-        player.sendMessage("User ID: " + lock_data.getUserID());
-        player.sendMessage("Lock ID: " + lock_data.getLockID());
-        player.sendMessage("Interval: " + deposit_data_locked.getInterval());
-        player.sendMessage("Payment: " + deposit_data_locked.getPayment());
-        player.sendMessage("Minimum Cost: " + deposit_data_locked.getMin_pay());
-      }
-      return true;
+    // check command process
+    if (check_cache.check(uuid)) {
+      event.setCancelled(true);
+      player.sendMessage(handler.getLockDataMessage(block.getLocation()));
+      return;
     }
-    return false;
+
+    // lock command process
+    Double deposit = lock_cache.pop(player.getUniqueId());
+    if (deposit != null) {
+      event.setCancelled(true);
+      handler.lock(player, deposit, block.getLocation());
+      return;
+    }
   }
 
 }

@@ -4,6 +4,7 @@ import com.skuralll.depositvault.cache.CacheStore;
 import com.skuralll.depositvault.command.CheckCommand;
 import com.skuralll.depositvault.command.CommandBase;
 import com.skuralll.depositvault.command.InfoCommand;
+import com.skuralll.depositvault.command.LockCommand;
 import com.skuralll.depositvault.config.ConfigLoader;
 import com.skuralll.depositvault.config.DBConfig;
 import com.skuralll.depositvault.db.Database;
@@ -67,6 +68,7 @@ public final class DepositVault extends JavaPlugin {
     CommandBase commandBase = new CommandBase();
     commandBase.register("info", new InfoCommand());
     commandBase.register("check", new CheckCommand());
+    commandBase.register("lock", new LockCommand());
     getCommand("dvault").setExecutor(commandBase);
 
     // register events
