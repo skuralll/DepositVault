@@ -43,8 +43,8 @@ public class LockHandler {
     if (lock_data != null) {
       DepositData deposit_data_locked = lock_data.getDepositData();
       message += "[Maintenance Cost]" + "\n";
-      message += "User ID: " + lock_data.getUserID() + "\n";
-      message += "Lock ID: " + lock_data.getLockID() + "\n";
+      message += "User ID: " + lock_data.getUserId() + "\n";
+      message += "Lock ID: " + lock_data.getLockId() + "\n";
       message += "Interval: " + deposit_data_locked.getInterval() + "\n";
       message += "Payment: " + deposit_data_locked.getPayment() + "\n";
       message += "Minimum Cost: " + deposit_data_locked.getMin_pay() + "\n";
