@@ -7,7 +7,12 @@ import com.skuralll.depositvault.model.DepositData;
 import com.skuralll.depositvault.model.LockData;
 import javax.annotation.CheckForNull;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.DoubleChestInventory;
+import org.bukkit.inventory.Inventory;
 
 public class LockHandler {
 
@@ -25,7 +30,7 @@ public class LockHandler {
   public Integer getUserId(Player player) {
     return db.getUserId(player);
   }
-  
+
   @CheckForNull
   public String getUserName(int user_id) {
     return db.getUserName(user_id);
@@ -81,6 +86,24 @@ public class LockHandler {
 
   public boolean isOwner(Player player, LockData data) {
     return data.getUserId() == getUserId(player);
+  }
+
+  // Derive one coordinate from a block with two coordinates
+  public Location getFixedLocation(Location location) {
+    Block block = location.getBlock();
+    // check block state
+    BlockState state = block.getState();
+    // If it were a large chest, replace the block and state with the left side
+    if (state instanceof Chest) {
+      Inventory chest_inv = ((Chest) block.getState()).getInventory();
+      if (chest_inv instanceof DoubleChestInventory dcchest_inv) {
+        Location left_location = dcchest_inv.getLeftSide().getLocation();
+        if (left_location == null)
+          return location;
+        return left_location;
+      }
+    }
+    return location;
   }
 
 }
