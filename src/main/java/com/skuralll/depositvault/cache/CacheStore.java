@@ -2,14 +2,20 @@ package com.skuralll.depositvault.cache;
 
 public class CacheStore {
 
-  private CheckCache check_cache;
+  private CheckCommandCache check_cache;
+  private LockCommandCache lock_cache;
 
   public CacheStore() {
-    check_cache = new CheckCache();
+    check_cache = new CheckCommandCache();
+    lock_cache = new LockCommandCache();
   }
 
-  public CheckCache getCheckCache() {
+  public CheckCommandCache getCheckCommandCache() {
     return check_cache;
   }
-  
+
+  public LockCommandCache getLockCommandCache() {
+    return lock_cache;
+  }
+
 }
