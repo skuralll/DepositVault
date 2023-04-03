@@ -9,7 +9,8 @@ import com.skuralll.depositvault.config.ConfigLoader;
 import com.skuralll.depositvault.config.DBConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.handler.LockHandler;
-import com.skuralll.depositvault.listener.PlayerListener;
+import com.skuralll.depositvault.listener.BlockEventListener;
+import com.skuralll.depositvault.listener.PlayerEventListener;
 import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -72,7 +73,8 @@ public final class DepositVault extends JavaPlugin {
     getCommand("dvault").setExecutor(commandBase);
 
     // register events
-    getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+    getServer().getPluginManager().registerEvents(new PlayerEventListener(), this);
+    getServer().getPluginManager().registerEvents(new BlockEventListener(), this);
   }
 
   @Override

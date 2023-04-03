@@ -41,10 +41,8 @@ public class PlayerEventListener implements Listener {
       return;
 
     // check block action
-    if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK
-        || event.getAction() == Action.LEFT_CLICK_BLOCK
-        || event.getAction() == Action.PHYSICAL
-    ))
+    Action action = event.getAction();
+    if (!(action == Action.LEFT_CLICK_BLOCK || action == Action.PHYSICAL))
       return;
 
     // check block type
