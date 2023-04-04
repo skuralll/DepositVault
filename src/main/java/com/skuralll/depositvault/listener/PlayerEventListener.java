@@ -1,8 +1,8 @@
 package com.skuralll.depositvault.listener;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.cache.CheckCommandCache;
 import com.skuralll.depositvault.cache.LockCommandCache;
+import com.skuralll.depositvault.cache.TimerCache;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
 import com.skuralll.depositvault.model.LockData;
@@ -22,7 +22,7 @@ public class PlayerEventListener implements Listener {
 
   private final DepositVault plugin;
   private final LockHandler handler;
-  private final CheckCommandCache check_cache;
+  private final TimerCache<UUID> check_cache;
   private final LockCommandCache lock_cache;
 
   public PlayerEventListener() {
@@ -42,7 +42,7 @@ public class PlayerEventListener implements Listener {
 
     // check block action
     Action action = event.getAction();
-    if (!(action == Action.LEFT_CLICK_BLOCK || action == Action.PHYSICAL))
+    if (!(action == Action.RIGHT_CLICK_BLOCK || action == Action.PHYSICAL))
       return;
 
     // check block type

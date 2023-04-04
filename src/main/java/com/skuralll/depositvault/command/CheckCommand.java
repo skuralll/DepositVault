@@ -1,13 +1,14 @@
 package com.skuralll.depositvault.command;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.cache.CheckCommandCache;
+import com.skuralll.depositvault.cache.TimerCache;
+import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class CheckCommand extends SubCommand {
 
-  private CheckCommandCache cache;
+  private TimerCache<UUID> cache;
 
   public CheckCommand() {
     executer = CommandExecuter.PLAYER;
