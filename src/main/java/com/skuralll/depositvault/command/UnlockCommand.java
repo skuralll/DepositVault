@@ -6,20 +6,20 @@ import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CheckCommand extends SubCommand {
+public class UnlockCommand extends SubCommand {
 
-  private TimerCache<UUID> cache;
+  TimerCache<UUID> cache;
 
-  public CheckCommand() {
+  public UnlockCommand() {
     executer = CommandExecuter.PLAYER;
-    cache = DepositVault.getInstance().getCacheStore().getCheckCommandCache();
+    cache = DepositVault.getInstance().getCacheStore().getUnlockCommandCache();
   }
 
   @Override
   public boolean onCommand(CommandSender sender, String[] args) {
     Player player = (Player) sender;
     cache.put(player.getUniqueId(), 60000L);
-    sender.sendMessage("Right click on the chest you want to check.");
+    sender.sendMessage("Right click on the chest you want to unlock.");
     return true;
   }
 

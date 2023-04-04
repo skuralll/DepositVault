@@ -84,6 +84,22 @@ public class LockHandler {
     return LockResult.SUCCESS;
   }
 
+  // unlock inventory holder
+  public LockResult unlock(Player player, Location location) {
+    // check locked or not
+    LockData lock_data = getLockData(location);
+    if (lock_data == null)
+      return LockResult.NOT_LOCKED;
+    // check owner
+    if (!isOwner(player, lock_data))
+      return LockResult.NOT_OWNER;
+    // unlock process
+    boolean result = db.removeLockData(location);
+    if (!result)
+      return LockResult.SQL_ERROR;
+    return LockResult.SUCCESS;
+  }
+
   public boolean isOwner(Player player, LockData data) {
     return data.getUserId() == getUserId(player);
   }

@@ -8,5 +8,5 @@ website: https://skuralll.com/
 commands:
   dvault:
     description: "/dvault help - Show helps."
-    usage: "/dvault <info|check|lock>"
+    usage: "/dvault <info|check|lock|unlock>"
     aliases: [ dv ]

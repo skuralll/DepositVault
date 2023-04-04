@@ -207,4 +207,24 @@ public class Database {
     return false;
   }
 
+  // remove lock data
+  public boolean removeLockData(Location location) {
+    if (getLockData(location) == null)
+      return false;
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "DELETE FROM `locks` WHERE `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?");
+      ps.setString(1, location.getWorld().getName());
+      ps.setInt(2, location.getBlockX());
+      ps.setInt(3, location.getBlockY());
+      ps.setInt(4, location.getBlockZ());
+      ps.executeUpdate();
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
 }

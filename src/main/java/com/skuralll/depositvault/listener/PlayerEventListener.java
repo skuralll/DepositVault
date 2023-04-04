@@ -23,12 +23,14 @@ public class PlayerEventListener implements Listener {
   private final DepositVault plugin;
   private final LockHandler handler;
   private final TimerCache<UUID> check_cache;
+  private final TimerCache<UUID> unlock_cache;
   private final LockCommandCache lock_cache;
 
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
     handler = plugin.getHandler();
     check_cache = plugin.getCacheStore().getCheckCommandCache();
+    unlock_cache = plugin.getCacheStore().getUnlockCommandCache();
     lock_cache = plugin.getCacheStore().getLockCommandCache();
   }
 
@@ -71,6 +73,14 @@ public class PlayerEventListener implements Listener {
     if (deposit != null) {
       event.setCancelled(true);
       LockResult result = handler.lock(player, deposit, location);
+      player.sendMessage(result.toString());
+      return;
+    }
+
+    // unlock command process
+    if (unlock_cache.check(uuid)) {
+      event.setCancelled(true);
+      LockResult result = handler.unlock(player, location);
       player.sendMessage(result.toString());
       return;
     }
