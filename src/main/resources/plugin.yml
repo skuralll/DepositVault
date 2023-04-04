@@ -9,3 +9,4 @@ commands:
   dvault:
     description: "/dvault help - Show helps."
     usage: "/dvault <info|check|lock>"
+    aliases: [ dv ]
