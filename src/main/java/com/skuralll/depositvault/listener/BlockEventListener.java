@@ -37,7 +37,8 @@ public class BlockEventListener implements Listener {
       if (handler.isOwner(player, lock_data)) {
         // owner
         player.sendMessage(
-            ChatColor.YELLOW + "You have this chest locked. Please use /dv unlock to unlock it.");
+            ChatColor.YELLOW
+                + "You have this chest locked, please use /dvault unlock to unlock it.");
       } else {
         // not owner
         String owner_name = handler.getUserName(lock_data.getUserId());
