@@ -43,14 +43,18 @@ public class LockHandler {
   }
 
   public String getLockDataMessage(Location location) {
-//    DepositData deposit_data = getPurchaseCost();
     LockData lock_data = getLockData(location);
+
+    int user_id = lock_data.getUserId();
+    String user_name = getUserName(user_id);
+
     String message = "";
     message += "[Status]" + "\n";
     message += "Locked: " + (lock_data != null ? "Yes" : "No") + "\n";
     if (lock_data != null) {
       message += "Expiration: " + lock_data.getExpireDate().toString() + "\n";
-      message += "User ID: " + lock_data.getUserId() + "\n";
+      message += "User: " + (user_name != null ? user_name : "UNKNOWN") + " (ID:"
+          + lock_data.getUserId() + ")\n";
       message += "Lock ID: " + lock_data.getLockId() + "\n";
     }
     return message;
