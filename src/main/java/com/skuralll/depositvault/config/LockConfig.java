@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.config;
 
 import com.skuralll.depositvault.DepositVault;
+import java.sql.Time;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class LockConfig extends Config {
@@ -33,6 +34,10 @@ public class LockConfig extends Config {
 
   public int getMax() {
     return max;
+  }
+
+  public Time getMaxTime() {
+    return new Time(unit.getMillis() * max);
   }
 
 }

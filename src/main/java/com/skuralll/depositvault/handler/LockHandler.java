@@ -70,7 +70,8 @@ public class LockHandler {
     if (getLockData(location) != null)
       return LockResult.LOCKED;
     // check max expire
-    // TODO
+    if (length.getTime() > config.getMaxTime().getTime())
+      return LockResult.MAX_EXPIRE;
     // add length to now
     LocalDateTime expire = LocalDateTime.now()
         .plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
