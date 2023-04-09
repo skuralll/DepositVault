@@ -5,11 +5,11 @@ import com.google.common.cache.CacheBuilder;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.CheckForNull;
 
-abstract public class CacheBase<K, V> {
+public class NormalCache<K, V> {
 
   protected Cache<K, V> cache;
 
-  public CacheBase() {
+  public NormalCache() {
     cache = CacheBuilder.newBuilder()
         .maximumSize(100)
         .expireAfterWrite(1, TimeUnit.MINUTES)

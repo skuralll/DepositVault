@@ -1,5 +1,7 @@
 package com.skuralll.depositvault.model;
 
+import java.time.LocalDateTime;
+
 public class LockData {
 
   private int lock_id;
@@ -8,7 +10,7 @@ public class LockData {
   private int x;
   private int y;
   private int z;
-  private DepositData deposit_data;
+  private LocalDateTime expire;
 
   public LockData(
       int lock_id,
@@ -17,7 +19,7 @@ public class LockData {
       int x,
       int y,
       int z,
-      DepositData deposit_data
+      LocalDateTime expire_date
   ) {
     this.lock_id = lock_id;
     this.user_id = user_id;
@@ -25,7 +27,7 @@ public class LockData {
     this.x = x;
     this.y = y;
     this.z = z;
-    this.deposit_data = deposit_data;
+    this.expire = expire_date;
   }
 
   @Override
@@ -37,12 +39,12 @@ public class LockData {
         ", x=" + x +
         ", y=" + y +
         ", z=" + z +
-        ", deposit_data=" + deposit_data.toString() +
+        ", expire=" + expire.toString() +
         '}';
   }
 
-  public DepositData getDepositData() {
-    return deposit_data;
+  public LocalDateTime getExpireDate() {
+    return expire;
   }
 
   public int getLockId() {

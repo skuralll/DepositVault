@@ -3,7 +3,7 @@ package com.skuralll.depositvault.handler;
 public enum LockResult {
   // lock
   LOCKED,
-  NOT_ENOUGH_DEPOSIT,
+  MAX_EXPIRE,
   SQL_ERROR,
   SUCCESS,
   // unlock
