@@ -5,6 +5,7 @@ import com.skuralll.depositvault.config.LockConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.model.DepositData;
 import com.skuralll.depositvault.model.LockData;
+import java.sql.Time;
 import javax.annotation.CheckForNull;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -51,36 +52,36 @@ public class LockHandler {
     String message = "";
     message += "[Status]" + "\n";
     message += "Locked: " + (lock_data != null ? "Yes" : "No") + "\n";
-    message += "[Purchase Cost]" + "\n";
-    message += "Interval: " + deposit_data.getInterval() + "\n";
-    message += "Payment: " + deposit_data.getPayment() + "\n";
-    message += "Minimum Cost: " + deposit_data.getMin_pay() + "\n";
-    if (lock_data != null) {
-      DepositData deposit_data_locked = lock_data.getDepositData();
-      message += "[Maintenance Cost]" + "\n";
-      message += "User ID: " + lock_data.getUserId() + "\n";
-      message += "Lock ID: " + lock_data.getLockId() + "\n";
-      message += "Interval: " + deposit_data_locked.getInterval() + "\n";
-      message += "Payment: " + deposit_data_locked.getPayment() + "\n";
-      message += "Minimum Cost: " + deposit_data_locked.getMin_pay() + "\n";
-    }
+//    message += "[Purchase Cost]" + "\n";
+//    message += "Interval: " + deposit_data.getInterval() + "\n";
+//    message += "Payment: " + deposit_data.getPayment() + "\n";
+//    message += "Minimum Cost: " + deposit_data.getMin_pay() + "\n";
+//    if (lock_data != null) {
+//      DepositData deposit_data_locked = lock_data.getDepositData();
+//      message += "[Maintenance Cost]" + "\n";
+//      message += "User ID: " + lock_data.getUserId() + "\n";
+//      message += "Lock ID: " + lock_data.getLockId() + "\n";
+//      message += "Interval: " + deposit_data_locked.getInterval() + "\n";
+//      message += "Payment: " + deposit_data_locked.getPayment() + "\n";
+//      message += "Minimum Cost: " + deposit_data_locked.getMin_pay() + "\n";
+//    }
     return message;
   }
 
   // lock inventory holder
-  public LockResult lock(Player player, Double deposit, Location location) {
-    // check locked or not
-    if (getLockData(location) != null)
-      return LockResult.LOCKED;
-    // check deposit
-    DepositData cost = getPurchaseCost();
-    if (deposit < cost.getMin_pay())
-      return LockResult.NOT_ENOUGH_DEPOSIT;
-    // lock process
-    cost.setDeposit(deposit);
-    boolean result = db.setLockData(player, location, cost);
-    if (!result)
-      return LockResult.SQL_ERROR;
+  public LockResult lock(Player player, Location location, Time length) {
+//    // check locked or not
+//    if (getLockData(location) != null)
+//      return LockResult.LOCKED;
+//    // check deposit
+//    DepositData cost = getPurchaseCost();
+//    if (deposit < cost.getMin_pay())
+//      return LockResult.NOT_ENOUGH_DEPOSIT;
+//    // lock process
+//    cost.setDeposit(deposit);
+//    boolean result = db.setLockData(player, location, cost);
+//    if (!result)
+//      return LockResult.SQL_ERROR;
     return LockResult.SUCCESS;
   }
 

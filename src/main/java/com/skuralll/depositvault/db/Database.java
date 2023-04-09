@@ -1,9 +1,9 @@
 package com.skuralll.depositvault.db;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.model.DepositData;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,9 +85,7 @@ public class Database {
             "`x` INT," +
             "`y` INT," +
             "`z` INT," +
-            "`interval` INT," +
-            "`payment` DOUBLE," +
-            "`deposit` DOUBLE" +
+            "`expire` DATETIME" +
             ")"
     );
   }
@@ -156,12 +154,6 @@ public class Database {
       ps.setInt(4, location.getBlockZ());
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
-        DepositData deposi_data = new DepositData(
-            rs.getInt("interval"),
-            rs.getDouble("payment"),
-            rs.getDouble("deposit"),
-            0d
-        );
         return new LockData(
             rs.getInt("lock_id"),
             rs.getInt("user_id"),
@@ -169,7 +161,7 @@ public class Database {
             rs.getInt("x"),
             rs.getInt("y"),
             rs.getInt("z"),
-            deposi_data
+            rs.getDate("expire")
         );
       }
     } catch (Exception e) {
@@ -178,7 +170,7 @@ public class Database {
     return null;
   }
 
-  public boolean setLockData(Player player, Location location, DepositData depositData) {
+  public boolean setLockData(Player player, Location location, Date expire) {
     // check user data and lock data
     createUserData(player);
     Integer user_id = getUserId(player);
@@ -190,15 +182,13 @@ public class Database {
     try {
       Statement statement = connection.createStatement();
       PreparedStatement ps = connection.prepareStatement(
-          "INSERT INTO `locks` (`user_id`, `world`, `x`, `y`, `z`, `interval`, `payment`, `deposit`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+          "INSERT INTO `locks` (`user_id`, `world`, `x`, `y`, `z`, `expire`) VALUES (?, ?, ?, ?, ?, ?)");
       ps.setInt(1, user_id);
       ps.setString(2, location.getWorld().getName());
       ps.setInt(3, location.getBlockX());
       ps.setInt(4, location.getBlockY());
       ps.setInt(5, location.getBlockZ());
-      ps.setInt(6, depositData.getInterval());
-      ps.setDouble(7, depositData.getPayment());
-      ps.setDouble(8, depositData.getDeposit());
+      ps.setDate(6, expire);
       ps.executeUpdate();
       return true;
     } catch (Exception e) {

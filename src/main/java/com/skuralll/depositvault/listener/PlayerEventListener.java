@@ -69,13 +69,13 @@ public class PlayerEventListener implements Listener {
     }
 
     // lock command process
-    Double deposit = lock_cache.pop(player.getUniqueId());
-    if (deposit != null) {
-      event.setCancelled(true);
-      LockResult result = handler.lock(player, deposit, location);
-      player.sendMessage(result.toString());
-      return;
-    }
+//    Double deposit = lock_cache.pop(player.getUniqueId());
+//    if (deposit != null) {
+//      event.setCancelled(true);
+//      LockResult result = handler.lock(player, deposit, location);
+//      player.sendMessage(result.toString());
+//      return;
+//    }
 
     // unlock command process
     if (unlock_cache.check(uuid)) {
