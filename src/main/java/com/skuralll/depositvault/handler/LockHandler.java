@@ -3,7 +3,6 @@ package com.skuralll.depositvault.handler;
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.config.LockConfig;
 import com.skuralll.depositvault.db.Database;
-import com.skuralll.depositvault.model.DepositData;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
 import javax.annotation.CheckForNull;
@@ -37,17 +36,12 @@ public class LockHandler {
     return db.getUserName(user_id);
   }
 
-  public DepositData getPurchaseCost() {
-    return new DepositData(config.getInterval(), config.getPayment(), config.getMinPay(), 0d);
-  }
-
   @CheckForNull
   public LockData getLockData(Location location) {
     return db.getLockData(location);
   }
 
   public String getLockDataMessage(Location location) {
-    DepositData deposit_data = getPurchaseCost();
     LockData lock_data = getLockData(location);
     String message = "";
     message += "[Status]" + "\n";
