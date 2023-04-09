@@ -1,13 +1,15 @@
 package com.skuralll.depositvault.command;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.cache.LockCommandCache;
+import com.skuralll.depositvault.cache.NormalCache;
+import java.sql.Time;
+import java.util.UUID;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class LockCommand extends SubCommand {
 
-  LockCommandCache cache;
+  NormalCache<UUID, Time> cache;
 
   public LockCommand() {
     executer = CommandExecuter.PLAYER;
@@ -16,21 +18,16 @@ public class LockCommand extends SubCommand {
 
   @Override
   public boolean onCommand(CommandSender sender, String[] args) {
-    if (args.length < 2) {
-      sender.sendMessage("Usage: /dvault lock <deposit>");
+    if (args.length < 1) {
+      sender.sendMessage("Usage: /dvault lock <time>");
       return false;
     }
 
-    Double deposit;
-    try {
-      deposit = Double.parseDouble(args[1]);
-    } catch (NumberFormatException e) {
-      sender.sendMessage("Deposit must be a number.");
-      return false;
-    }
+    // TODO
+    // time process
 
     Player player = (Player) sender;
-    cache.put(player.getUniqueId(), deposit);
+    cache.put(player.getUniqueId(), new Time(3000000L));
     sender.sendMessage("Right click on the chest you want to lock.");
     return true;
   }

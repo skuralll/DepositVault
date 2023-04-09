@@ -1,6 +1,6 @@
 package com.skuralll.depositvault.cache;
 
-public class TimerCache<T> extends CacheBase<T, Long> {
+public class TimerCache<T> extends NormalCache<T, Long> {
 
   @Override
   public void put(T key, Long time) {

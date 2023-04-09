@@ -5,6 +5,7 @@ import com.skuralll.depositvault.config.LockConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
+import java.time.LocalDateTime;
 import javax.annotation.CheckForNull;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -42,6 +43,7 @@ public class LockHandler {
   }
 
   public String getLockDataMessage(Location location) {
+//    DepositData deposit_data = getPurchaseCost();
     LockData lock_data = getLockData(location);
     String message = "";
     message += "[Status]" + "\n";
@@ -64,18 +66,18 @@ public class LockHandler {
 
   // lock inventory holder
   public LockResult lock(Player player, Location location, Time length) {
-//    // check locked or not
-//    if (getLockData(location) != null)
-//      return LockResult.LOCKED;
-//    // check deposit
-//    DepositData cost = getPurchaseCost();
-//    if (deposit < cost.getMin_pay())
-//      return LockResult.NOT_ENOUGH_DEPOSIT;
-//    // lock process
-//    cost.setDeposit(deposit);
-//    boolean result = db.setLockData(player, location, cost);
-//    if (!result)
-//      return LockResult.SQL_ERROR;
+    // check locked or not
+    if (getLockData(location) != null)
+      return LockResult.LOCKED;
+    // check max expire
+    // TODO
+    // add length to now
+    LocalDateTime expire = LocalDateTime.now()
+        .plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
+    // lock process
+    boolean result = db.setLockData(player, location, expire);
+    if (!result)
+      return LockResult.SQL_ERROR;
     return LockResult.SUCCESS;
   }
 

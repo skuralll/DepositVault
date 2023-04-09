@@ -3,12 +3,12 @@ package com.skuralll.depositvault.db;
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import javax.annotation.CheckForNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -170,7 +170,7 @@ public class Database {
     return null;
   }
 
-  public boolean setLockData(Player player, Location location, Date expire) {
+  public boolean setLockData(Player player, Location location, LocalDateTime expire) {
     // check user data and lock data
     createUserData(player);
     Integer user_id = getUserId(player);
@@ -188,7 +188,7 @@ public class Database {
       ps.setInt(3, location.getBlockX());
       ps.setInt(4, location.getBlockY());
       ps.setInt(5, location.getBlockZ());
-      ps.setDate(6, expire);
+      ps.setObject(6, expire);
       ps.executeUpdate();
       return true;
     } catch (Exception e) {

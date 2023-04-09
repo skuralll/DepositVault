@@ -1,11 +1,12 @@
 package com.skuralll.depositvault.listener;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.cache.LockCommandCache;
+import com.skuralll.depositvault.cache.NormalCache;
 import com.skuralll.depositvault.cache.TimerCache;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
 import com.skuralll.depositvault.model.LockData;
+import java.sql.Time;
 import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,7 +25,7 @@ public class PlayerEventListener implements Listener {
   private final LockHandler handler;
   private final TimerCache<UUID> check_cache;
   private final TimerCache<UUID> unlock_cache;
-  private final LockCommandCache lock_cache;
+  private final NormalCache<UUID, Time> lock_cache;
 
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
@@ -69,13 +70,13 @@ public class PlayerEventListener implements Listener {
     }
 
     // lock command process
-//    Double deposit = lock_cache.pop(player.getUniqueId());
-//    if (deposit != null) {
-//      event.setCancelled(true);
-//      LockResult result = handler.lock(player, deposit, location);
-//      player.sendMessage(result.toString());
-//      return;
-//    }
+    Time length = lock_cache.pop(player.getUniqueId());
+    if (length != null) {
+      event.setCancelled(true);
+      LockResult result = handler.lock(player, location, length);
+      player.sendMessage(result.toString());
+      return;
+    }
 
     // unlock command process
     if (unlock_cache.check(uuid)) {
