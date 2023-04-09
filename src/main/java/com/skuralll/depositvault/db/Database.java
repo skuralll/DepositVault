@@ -161,7 +161,7 @@ public class Database {
             rs.getInt("x"),
             rs.getInt("y"),
             rs.getInt("z"),
-            rs.getDate("expire")
+            rs.getObject("expire", LocalDateTime.class)
         );
       }
     } catch (Exception e) {

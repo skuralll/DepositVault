@@ -48,19 +48,11 @@ public class LockHandler {
     String message = "";
     message += "[Status]" + "\n";
     message += "Locked: " + (lock_data != null ? "Yes" : "No") + "\n";
-//    message += "[Purchase Cost]" + "\n";
-//    message += "Interval: " + deposit_data.getInterval() + "\n";
-//    message += "Payment: " + deposit_data.getPayment() + "\n";
-//    message += "Minimum Cost: " + deposit_data.getMin_pay() + "\n";
-//    if (lock_data != null) {
-//      DepositData deposit_data_locked = lock_data.getDepositData();
-//      message += "[Maintenance Cost]" + "\n";
-//      message += "User ID: " + lock_data.getUserId() + "\n";
-//      message += "Lock ID: " + lock_data.getLockId() + "\n";
-//      message += "Interval: " + deposit_data_locked.getInterval() + "\n";
-//      message += "Payment: " + deposit_data_locked.getPayment() + "\n";
-//      message += "Minimum Cost: " + deposit_data_locked.getMin_pay() + "\n";
-//    }
+    if (lock_data != null) {
+      message += "Expiration: " + lock_data.getExpireDate().toString() + "\n";
+      message += "User ID: " + lock_data.getUserId() + "\n";
+      message += "Lock ID: " + lock_data.getLockId() + "\n";
+    }
     return message;
   }
 

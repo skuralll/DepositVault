@@ -28,7 +28,7 @@ public class LockCommand extends SubCommand {
 
     // handle time
     int time = Integer.parseInt(args[1]);
-    if (time > config.getMax()) {
+    if (time < 1 || time > config.getMax()) {
       // time is out of range
       sender.sendMessage(
           "Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name()
