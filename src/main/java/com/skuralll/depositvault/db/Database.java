@@ -134,7 +134,7 @@ public class Database {
       ps.setInt(1, user_id);
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
-        return rs.getString("user_id");
+        return rs.getString("name");
       }
     } catch (Exception e) {
       e.printStackTrace();
