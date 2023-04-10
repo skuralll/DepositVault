@@ -130,6 +130,10 @@ public final class DepositVault extends JavaPlugin {
     return instance;
   }
 
+  public Economy getEconomy() {
+    return economy;
+  }
+
   public ConfigLoader getConfigLoader() {
     return config;
   }
