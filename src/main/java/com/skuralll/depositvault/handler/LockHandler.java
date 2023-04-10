@@ -7,6 +7,7 @@ import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
 import java.time.LocalDateTime;
 import javax.annotation.CheckForNull;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -18,11 +19,13 @@ import org.bukkit.inventory.Inventory;
 public class LockHandler {
 
   private final DepositVault plugin;
+  private final Economy economy;
   private final LockConfig config;
   private final Database db;
 
   public LockHandler() {
     plugin = DepositVault.getInstance();
+    economy = plugin.getEconomy();
     config = plugin.getConfigLoader().getLockConfig();
     db = plugin.getDatabase();
   }
@@ -68,6 +71,10 @@ public class LockHandler {
     // check max expire
     if (length.getTime() > config.getMaxTime().getTime())
       return LockResult.MAX_EXPIRE;
+    // check money
+    int price = getLockPrice(length);
+    if (economy.getBalance(player) < price)
+      return LockResult.NOT_ENOUGH_MONEY;
     // add length to now
     LocalDateTime expire = LocalDateTime.now()
         .plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
@@ -75,6 +82,8 @@ public class LockHandler {
     boolean result = db.setLockData(player, location, expire);
     if (!result)
       return LockResult.SQL_ERROR;
+    // reduce money
+    economy.withdrawPlayer(player, price);
     return LockResult.SUCCESS;
   }
 
@@ -92,6 +101,11 @@ public class LockHandler {
     if (!result)
       return LockResult.SQL_ERROR;
     return LockResult.SUCCESS;
+  }
+
+  // get lock price
+  public int getLockPrice(Time length) {
+    return (int) (config.getPrice() * Math.ceil(length.getTime() / config.getUnit().getMillis()));
   }
 
   public boolean isOwner(Player player, LockData data) {
