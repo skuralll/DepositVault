@@ -170,6 +170,31 @@ public class Database {
     return null;
   }
 
+  @CheckForNull
+  public LockData getLockData(Integer lock_id) {
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "SELECT * FROM `locks` WHERE `lock_id` = ?");
+      ps.setInt(1, lock_id);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        return new LockData(
+            rs.getInt("lock_id"),
+            rs.getInt("user_id"),
+            rs.getString("world"),
+            rs.getInt("x"),
+            rs.getInt("y"),
+            rs.getInt("z"),
+            rs.getObject("expire", LocalDateTime.class)
+        );
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public boolean setLockData(Player player, Location location, LocalDateTime expire) {
     // check user data and lock data
     createUserData(player);
@@ -209,6 +234,22 @@ public class Database {
       ps.setInt(2, location.getBlockX());
       ps.setInt(3, location.getBlockY());
       ps.setInt(4, location.getBlockZ());
+      ps.executeUpdate();
+      return true;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
+  public boolean removeLockData(Integer lock_id) {
+    if (getLockData(lock_id) == null)
+      return false;
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "DELETE FROM `locks` WHERE `lock_id` = ?");
+      ps.setInt(1, lock_id);
       ps.executeUpdate();
       return true;
     } catch (Exception e) {

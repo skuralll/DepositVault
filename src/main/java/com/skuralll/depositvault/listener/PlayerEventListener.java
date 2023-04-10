@@ -89,6 +89,7 @@ public class PlayerEventListener implements Listener {
     // protect locked inventory-holder
     LockData lock_data = handler.getLockData(location);
     if (lock_data != null) {
+      handler.validate(lock_data);
       if (!handler.isOwner(player, lock_data)) {
         String owner_name = handler.getUserName(lock_data.getUserId());
         if (owner_name == null)

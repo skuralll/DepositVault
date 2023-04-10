@@ -116,4 +116,13 @@ public class LockHandler {
     return location;
   }
 
+  // return true if lock is expired
+  public boolean validate(LockData data) {
+    if (data.getExpireDate().isBefore(LocalDateTime.now())) {
+      db.removeLockData(data.getLockId());
+      return true;
+    }
+    return false;
+  }
+
 }

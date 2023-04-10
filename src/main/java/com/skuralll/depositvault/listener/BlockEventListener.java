@@ -32,6 +32,7 @@ public class BlockEventListener implements Listener {
     // protect locked inventory-holder
     LockData lock_data = handler.getLockData(location);
     if (lock_data != null) {
+      handler.validate(lock_data);
       Player player = event.getPlayer();
       event.setCancelled(true);
       if (handler.isOwner(player, lock_data)) {
