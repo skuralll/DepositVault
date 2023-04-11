@@ -14,6 +14,7 @@ public class CacheStore {
     check_cache = new TimerCache<UUID>();
     unlock_cache = new TimerCache<UUID>();
     lock_cache = new NormalCache<UUID, Time>();
+    extend_cache = new NormalCache<UUID, Time>();
   }
 
   public TimerCache<UUID> getCheckCommandCache() {
