@@ -103,6 +103,26 @@ public class LockHandler {
     return LockResult.SUCCESS;
   }
 
+  // extend expiration
+  public LockResult extend(Player player, Location location, Time length){
+    // check locked or not
+    LockData lock_data = getLockData(location);
+    if (lock_data == null)
+      return LockResult.NOT_LOCKED;
+    // check owner
+    if (!isOwner(player, lock_data))
+      return LockResult.NOT_OWNER;
+    // check max expire
+    LocalDateTime new_expire = lock_data.getExpireDate().plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
+    if (new_expire.isAfter(LocalDateTime.now().plus(config.getMaxTime().getTime(), java.time.temporal.ChronoUnit.MILLIS)))
+      return LockResult.MAX_EXPIRE;
+    // extend process
+    boolean result = db.removeLockData(location) && db.setLockData(player, location, new_expire);
+    if (!result)
+      return LockResult.SQL_ERROR;
+    return LockResult.SUCCESS;
+  }
+
   // get lock price
   public int getLockPrice(Time length) {
     return (int) (config.getPrice() * Math.ceil(length.getTime() / config.getUnit().getMillis()));
@@ -138,5 +158,6 @@ public class LockHandler {
     }
     return false;
   }
+
 
 }
