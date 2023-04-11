@@ -25,6 +25,7 @@ public class PlayerEventListener implements Listener {
   private final LockHandler handler;
   private final TimerCache<UUID> check_cache;
   private final TimerCache<UUID> unlock_cache;
+  private final TimerCache<UUID> ui_cache;
   private final NormalCache<UUID, Time> lock_cache;
   private final NormalCache<UUID, Time> extend_cache;
 
@@ -33,6 +34,7 @@ public class PlayerEventListener implements Listener {
     handler = plugin.getHandler();
     check_cache = plugin.getCacheStore().getCheckCommandCache();
     unlock_cache = plugin.getCacheStore().getUnlockCommandCache();
+    ui_cache = plugin.getCacheStore().getUICommandCache();
     lock_cache = plugin.getCacheStore().getLockCommandCache();
     extend_cache = plugin.getCacheStore().getExtendCommandCache();
   }
@@ -99,6 +101,13 @@ public class PlayerEventListener implements Listener {
       event.setCancelled(true);
       LockResult result = handler.extend(player, location, extend_length);
       player.sendMessage(result.toString());
+      return;
+    }
+
+    // ui command chache
+    if (ui_cache.check(uuid)) {
+      event.setCancelled(true);
+      // TODO: open ui
       return;
     }
 
