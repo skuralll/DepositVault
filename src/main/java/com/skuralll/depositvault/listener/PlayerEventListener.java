@@ -26,6 +26,7 @@ public class PlayerEventListener implements Listener {
   private final TimerCache<UUID> check_cache;
   private final TimerCache<UUID> unlock_cache;
   private final NormalCache<UUID, Time> lock_cache;
+  private final NormalCache<UUID, Time> extend_cache;
 
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
@@ -33,6 +34,7 @@ public class PlayerEventListener implements Listener {
     check_cache = plugin.getCacheStore().getCheckCommandCache();
     unlock_cache = plugin.getCacheStore().getUnlockCommandCache();
     lock_cache = plugin.getCacheStore().getLockCommandCache();
+    extend_cache = plugin.getCacheStore().getExtendCommandCache();
   }
 
   @EventHandler
@@ -70,10 +72,10 @@ public class PlayerEventListener implements Listener {
     }
 
     // lock command process
-    Time length = lock_cache.pop(player.getUniqueId());
-    if (length != null) {
+    Time lock_length = lock_cache.pop(player.getUniqueId());
+    if (lock_length != null) {
       event.setCancelled(true);
-      LockResult result = handler.lock(player, location, length);
+      LockResult result = handler.lock(player, location, lock_length);
       player.sendMessage(result.toString());
       return;
     }
@@ -82,6 +84,15 @@ public class PlayerEventListener implements Listener {
     if (unlock_cache.check(uuid)) {
       event.setCancelled(true);
       LockResult result = handler.unlock(player, location);
+      player.sendMessage(result.toString());
+      return;
+    }
+
+    // extend command process
+    Time extend_length = extend_cache.pop(player.getUniqueId());
+    if (extend_length != null) {
+      event.setCancelled(true);
+      LockResult result = handler.extend(player, location, extend_length);
       player.sendMessage(result.toString());
       return;
     }
@@ -96,6 +107,7 @@ public class PlayerEventListener implements Listener {
           owner_name = "Unknown";
         player.sendMessage(ChatColor.RED + "This block is locked by " + owner_name + ".");
         event.setCancelled(true);
+        return;
       }
     }
   }

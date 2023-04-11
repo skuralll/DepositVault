@@ -8,6 +8,7 @@ public class CacheStore {
   private TimerCache<UUID> check_cache;
   private TimerCache<UUID> unlock_cache;
   private NormalCache<UUID, Time> lock_cache;
+  private NormalCache<UUID, Time> extend_cache;
 
   public CacheStore() {
     check_cache = new TimerCache<UUID>();
@@ -25,6 +26,10 @@ public class CacheStore {
 
   public NormalCache<UUID, Time> getLockCommandCache() {
     return lock_cache;
+  }
+
+  public NormalCache<UUID, Time> getExtendCommandCache() {
+    return extend_cache;
   }
 
 }
