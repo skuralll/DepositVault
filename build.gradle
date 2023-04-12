@@ -53,5 +53,4 @@ processResources {
 
 shadowJar {
     archiveName("DepositVault.jar")
-    minimize()
 }
