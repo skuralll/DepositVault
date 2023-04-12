@@ -8,6 +8,8 @@ import com.skuralll.depositvault.handler.LockResult;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
 import java.util.UUID;
+
+import com.skuralll.depositvault.ui.HolderMenuGUI;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -107,7 +109,8 @@ public class PlayerEventListener implements Listener {
     // ui command chache
     if (ui_cache.check(uuid)) {
       event.setCancelled(true);
-      // TODO: open ui
+      HolderMenuGUI gui = new HolderMenuGUI(player);
+      gui.open();
       return;
     }
 
