@@ -109,7 +109,7 @@ public class PlayerEventListener implements Listener {
     // ui command chache
     if (ui_cache.check(uuid)) {
       event.setCancelled(true);
-      HolderMenuGUI gui = new HolderMenuGUI(player);
+      HolderMenuGUI gui = new HolderMenuGUI(player, location);
       gui.open();
       return;
     }

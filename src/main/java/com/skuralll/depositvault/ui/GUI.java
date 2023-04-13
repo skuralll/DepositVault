@@ -1,13 +1,14 @@
 package com.skuralll.depositvault.ui;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.window.Window;
 
 abstract public class GUI {
 
-    public static HolderMenuGUI getHolderMenuGUI(Player player){
-        return new HolderMenuGUI(player);
+    public static HolderMenuGUI getHolderMenuGUI(Player player, Location location){
+        return new HolderMenuGUI(player, location);
     }
 
     protected Player player;
