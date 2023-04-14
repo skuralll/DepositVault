@@ -18,7 +18,7 @@ abstract public class GUI {
     }
 
     public String getTitle(){
-        return "title";
+        return "DepositVault";
     }
 
     abstract public Gui getGui();

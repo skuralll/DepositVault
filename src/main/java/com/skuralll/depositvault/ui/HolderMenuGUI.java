@@ -18,6 +18,10 @@ public class HolderMenuGUI extends GUI {
         this.location = location;
     }
 
+    public String getTitle(){
+        return "DepositVault >> Menu";
+    }
+
     @Override
     public Gui getGui() {
         return Gui.normal() // Creates the GuiBuilder for a normal GUI
