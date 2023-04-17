@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.annotation.CheckForNull;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -124,6 +125,25 @@ public class Database {
     }
     return null;
   }
+
+  // get user uuid
+  @CheckForNull
+  public UUID getUserUUID(Integer user_id) {
+    try {
+      Statement statement = connection.createStatement();
+      PreparedStatement ps = connection.prepareStatement(
+          "SELECT `uuid` FROM `user` WHERE `user_id` = ?");
+      ps.setInt(1, user_id);
+      ResultSet rs = ps.executeQuery();
+      while (rs.next()) {
+        return UUID.fromString(rs.getString("uuid"));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
 
   @CheckForNull
   public String getUserName(Integer user_id) {

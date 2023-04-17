@@ -6,6 +6,7 @@ import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.annotation.CheckForNull;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
@@ -33,6 +34,11 @@ public class LockHandler {
   @CheckForNull
   public Integer getUserId(Player player) {
     return db.getUserId(player);
+  }
+
+  @CheckForNull
+  public UUID getUserUUID(int user_id) {
+    return db.getUserUUID(user_id);
   }
 
   @CheckForNull
@@ -103,7 +109,7 @@ public class LockHandler {
   }
 
   // extend expiration
-  public LockResult extend(Player player, Location location, Time length){
+  public LockResult extend(Player player, Location location, Time length) {
     // check locked or not
     LockData lock_data = getLockData(location);
     if (lock_data == null)
