@@ -44,7 +44,7 @@ public class LockStatusItem extends AsyncItem {
               }
               // set meta
               ItemMeta meta = item.getItemMeta();
-              meta.setDisplayName("" + ChatColor.RESET + ChatColor.BOLD + "[Status]" + ChatColor.RESET);
+              meta.setDisplayName("" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[Status]" + ChatColor.RESET);
               ArrayList<String> lores = new ArrayList<>();
               lores.add(ChatColor.YELLOW + "Locked: " + ChatColor.RESET + (data == null ? "False" : "True" + " (ID:" + data.getLockId() + ")"));
               if (data != null) {
