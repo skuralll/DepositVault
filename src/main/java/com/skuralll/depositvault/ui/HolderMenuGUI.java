@@ -1,5 +1,6 @@
 package com.skuralll.depositvault.ui;
 
+import com.skuralll.depositvault.ui.item.LockItem;
 import com.skuralll.depositvault.ui.item.LockStatusItem;
 import com.skuralll.depositvault.ui.item.UnLockItem;
 import org.bukkit.Location;
@@ -27,12 +28,13 @@ public class HolderMenuGUI extends GUI {
     return Gui.normal() // Creates the GuiBuilder for a normal GUI
         .setStructure(
             "# # # # # # # # #",
-            "# . U . . . S . #",
-            "# . . . . . . . #",
+            "# . L . . . S . #",
+            "# . U . . . . . #",
             "# # # # # # # # #")
         .addIngredient('#', new SimpleItem(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE)))
         .addIngredient('S', new LockStatusItem(location))
         .addIngredient('U', new UnLockItem(player, location))
+        .addIngredient('L', new LockItem(player, location))
         .build();
   }
 }
