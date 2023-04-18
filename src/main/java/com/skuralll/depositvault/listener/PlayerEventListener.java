@@ -3,9 +3,11 @@ package com.skuralll.depositvault.listener;
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.NormalCache;
 import com.skuralll.depositvault.cache.TimerCache;
+import com.skuralll.depositvault.config.LockConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
 import com.skuralll.depositvault.model.LockData;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import java.sql.Time;
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerChannelEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -25,20 +28,24 @@ public class PlayerEventListener implements Listener {
 
   private final DepositVault plugin;
   private final LockHandler handler;
+  private final LockConfig config;
   private final TimerCache<UUID> check_cache;
   private final TimerCache<UUID> unlock_cache;
   private final TimerCache<UUID> ui_cache;
   private final NormalCache<UUID, Time> lock_cache;
   private final NormalCache<UUID, Time> extend_cache;
+  private final NormalCache<UUID, Location> lock_ui_cache;
 
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
     handler = plugin.getHandler();
+    config = plugin.getConfigLoader().getLockConfig();
     check_cache = plugin.getCacheStore().getCheckCommandCache();
     unlock_cache = plugin.getCacheStore().getUnlockCommandCache();
     ui_cache = plugin.getCacheStore().getUICommandCache();
     lock_cache = plugin.getCacheStore().getLockCommandCache();
     extend_cache = plugin.getCacheStore().getExtendCommandCache();
+    lock_ui_cache = plugin.getCacheStore().getLockUICache();
   }
 
   @EventHandler
@@ -124,6 +131,28 @@ public class PlayerEventListener implements Listener {
         event.setCancelled(true);
         return;
       }
+    }
+  }
+
+  @EventHandler
+  public void onPlayerChat(AsyncChatEvent event){
+    Player player = event.getPlayer();
+    String message = event.signedMessage().message();
+
+    // lock-ui process
+    Location location = lock_ui_cache.pop(event.getPlayer().getUniqueId());
+    if(location != null){
+      event.setCancelled(true);
+      // check time
+      int time = Integer.parseInt(message);
+      if(!handler.isValidTime(time)){
+        player.sendMessage("Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name().toLowerCase() + "s.");
+        return;
+      }
+      // lock
+      LockResult result = handler.lock(player, location, handler.getTimeFromUnit(time));
+      player.sendMessage(result.toString());
+      return;
     }
   }
 

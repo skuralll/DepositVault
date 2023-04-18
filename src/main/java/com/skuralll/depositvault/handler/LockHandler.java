@@ -137,6 +137,14 @@ public class LockHandler {
     return data.getUserId() == getUserId(player);
   }
 
+  public boolean isValidTime(int time){
+    return 0 < time && time <= config.getMax();
+  }
+
+  public Time getTimeFromUnit(int time){
+    return new Time(config.getUnit().getMillis() * time);
+  }
+
   // Derive one coordinate from a block with two coordinates
   public Location getFixedLocation(Location location) {
     Block block = location.getBlock();

@@ -35,16 +35,14 @@ public class LockCommand extends SubCommand {
 
     // handle time
     int time = Integer.parseInt(args[1]);
-    if (time < 1 || time > config.getMax()) {
+    if (!handler.isValidTime(time)) {
       // time is out of range
-      sender.sendMessage(
-          "Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name()
-              .toLowerCase() + "s.");
+      sender.sendMessage("Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name().toLowerCase() + "s.");
       return true;
     }
 
     // check vault money
-    Time length = new Time(config.getUnit().getMillis() * time);
+    Time length = handler.getTimeFromUnit(time);
     int price = handler.getLockPrice(length);
     if (economy.getBalance((Player) sender) < price) {
       sender.sendMessage("You don't have enough money to lock the vault.");

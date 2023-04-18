@@ -24,6 +24,11 @@ public enum LockUnit {
     return null;
   }
 
+  // get char
+  public String getName() {
+    return name;
+  }
+
   // get mills
   public long getMillis() {
     return millis;

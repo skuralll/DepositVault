@@ -2,6 +2,7 @@ package com.skuralll.depositvault.cache;
 
 import java.sql.Time;
 import java.util.UUID;
+import org.bukkit.Location;
 
 public class CacheStore {
 
@@ -10,6 +11,7 @@ public class CacheStore {
   private TimerCache<UUID> ui_cache;
   private NormalCache<UUID, Time> lock_cache;
   private NormalCache<UUID, Time> extend_cache;
+  private NormalCache<UUID, Location> lock_ui_cache;
 
   public CacheStore() {
     check_cache = new TimerCache<UUID>();
@@ -17,6 +19,7 @@ public class CacheStore {
     ui_cache = new TimerCache<UUID>();
     lock_cache = new NormalCache<UUID, Time>();
     extend_cache = new NormalCache<UUID, Time>();
+    lock_ui_cache = new NormalCache<UUID, Location>();
   }
 
   public TimerCache<UUID> getCheckCommandCache() {
@@ -37,6 +40,10 @@ public class CacheStore {
 
   public NormalCache<UUID, Time> getExtendCommandCache() {
     return extend_cache;
+  }
+
+  public NormalCache<UUID, Location> getLockUICache() {
+    return lock_ui_cache;
   }
 
 }
