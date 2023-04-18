@@ -35,6 +35,7 @@ public class PlayerEventListener implements Listener {
   private final NormalCache<UUID, Time> lock_cache;
   private final NormalCache<UUID, Time> extend_cache;
   private final NormalCache<UUID, Location> lock_ui_cache;
+  private final NormalCache<UUID, Location> extend_ui_cache;
 
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
@@ -46,6 +47,7 @@ public class PlayerEventListener implements Listener {
     lock_cache = plugin.getCacheStore().getLockCommandCache();
     extend_cache = plugin.getCacheStore().getExtendCommandCache();
     lock_ui_cache = plugin.getCacheStore().getLockUICache();
+    extend_ui_cache = plugin.getCacheStore().getExtendUICache();
   }
 
   @EventHandler
@@ -140,17 +142,21 @@ public class PlayerEventListener implements Listener {
     String message = event.signedMessage().message();
 
     // lock-ui process
-    Location location = lock_ui_cache.pop(event.getPlayer().getUniqueId());
-    if(location != null){
+    Location lock_location = lock_ui_cache.pop(event.getPlayer().getUniqueId());
+    if(lock_location != null){
       event.setCancelled(true);
-      // check time
       int time = Integer.parseInt(message);
-      if(!handler.isValidTime(time)){
-        player.sendMessage("Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name().toLowerCase() + "s.");
-        return;
-      }
-      // lock
-      LockResult result = handler.lock(player, location, handler.getTimeFromUnit(time));
+      LockResult result = handler.lock(player, lock_location, handler.getTimeFromUnit(time));
+      player.sendMessage(result.toString());
+      return;
+    }
+
+    // extend-ui process
+    Location extend_location = extend_ui_cache.pop(event.getPlayer().getUniqueId());
+    if(extend_location != null){
+      event.setCancelled(true);
+      int time = Integer.parseInt(message);
+      LockResult result = handler.extend(player, extend_location, handler.getTimeFromUnit(time));
       player.sendMessage(result.toString());
       return;
     }

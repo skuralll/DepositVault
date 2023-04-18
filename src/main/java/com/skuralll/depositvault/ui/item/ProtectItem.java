@@ -15,27 +15,28 @@ import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
 
-public class LockItem extends AbstractItem {
+public class ProtectItem extends AbstractItem {
 
   private DepositVault plugin;
-  private LockHandler handler;
   private Player player;
   private Location location;
 
-  private boolean clicked = false;
+  private String title;
+  private NormalCache cache;
 
-  public LockItem(Player player, Location location) {
+  public ProtectItem(Player player, Location location, String title, NormalCache cache) {
     this.plugin = DepositVault.getInstance();
-    this.handler = plugin.getHandler();
     this.player = player;
     this.location = location;
+    this.title = title;
+    this.cache = cache;
   }
 
   @Override
   public ItemProvider getItemProvider() {
     LockConfig config = plugin.getConfigLoader().getLockConfig();
     ItemBuilder item = new ItemBuilder(Material.CHEST);
-    item.setDisplayName("" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[Lock]" + ChatColor.RESET);
+    item.setDisplayName("" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[" + title + "]" + ChatColor.RESET);
     item.addLoreLines(ChatColor.YELLOW + "Price: " + ChatColor.DARK_PURPLE + config.getPrice() + "/" + config.getUnit().getName());
     return item;
   }
@@ -43,13 +44,8 @@ public class LockItem extends AbstractItem {
   @Override
   public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
     player.closeInventory();
-    if(handler.getLockData(location) != null){
-      player.sendMessage("This chest is already locked.");
-      return;
-    }
     player.sendMessage("Please enter the time in the chat.");
     // put cache
-    NormalCache cache = plugin.getCacheStore().getLockUICache();
     cache.put(player.getUniqueId(), location);
   }
 }
