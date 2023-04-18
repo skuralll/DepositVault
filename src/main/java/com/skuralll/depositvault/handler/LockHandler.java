@@ -6,6 +6,7 @@ import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.annotation.CheckForNull;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
@@ -36,6 +37,11 @@ public class LockHandler {
   }
 
   @CheckForNull
+  public UUID getUserUUID(int user_id) {
+    return db.getUserUUID(user_id);
+  }
+
+  @CheckForNull
   public String getUserName(int user_id) {
     return db.getUserName(user_id);
   }
@@ -48,13 +54,12 @@ public class LockHandler {
   public String getLockDataMessage(Location location) {
     LockData lock_data = getLockData(location);
 
-    int user_id = lock_data.getUserId();
-    String user_name = getUserName(user_id);
-
     String message = "";
     message += "[Status]" + "\n";
     message += "Locked: " + (lock_data != null ? "Yes" : "No") + "\n";
     if (lock_data != null) {
+      int user_id = lock_data.getUserId();
+      String user_name = getUserName(user_id);
       message += "Expiration: " + lock_data.getExpireDate().toString() + "\n";
       message += "User: " + (user_name != null ? user_name : "UNKNOWN") + " (ID:"
           + lock_data.getUserId() + ")\n";
@@ -104,7 +109,7 @@ public class LockHandler {
   }
 
   // extend expiration
-  public LockResult extend(Player player, Location location, Time length){
+  public LockResult extend(Player player, Location location, Time length) {
     // check locked or not
     LockData lock_data = getLockData(location);
     if (lock_data == null)
@@ -130,6 +135,14 @@ public class LockHandler {
 
   public boolean isOwner(Player player, LockData data) {
     return data.getUserId() == getUserId(player);
+  }
+
+  public boolean isValidTime(int time){
+    return 0 < time && time <= config.getMax();
+  }
+
+  public Time getTimeFromUnit(int time){
+    return new Time(config.getUnit().getMillis() * time);
   }
 
   // Derive one coordinate from a block with two coordinates
