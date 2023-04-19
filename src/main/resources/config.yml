@@ -1,3 +1,5 @@
+# General configuration
+timezone: Asia/Tokyo # Timezone
 # Database configuration
 db:
   host: mariaDB

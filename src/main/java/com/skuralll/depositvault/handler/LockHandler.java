@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.handler;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.GeneralConfig;
 import com.skuralll.depositvault.config.LockConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.model.LockData;
@@ -21,13 +22,15 @@ public class LockHandler {
 
   private final DepositVault plugin;
   private final Economy economy;
-  private final LockConfig config;
+  private final LockConfig lock_config;
+  private final GeneralConfig general_config;
   private final Database db;
 
   public LockHandler() {
     plugin = DepositVault.getInstance();
     economy = plugin.getEconomy();
-    config = plugin.getConfigLoader().getLockConfig();
+    lock_config = plugin.getConfigLoader().getLockConfig();
+    general_config = plugin.getConfigLoader().getGeneralConfig();
     db = plugin.getDatabase();
   }
 
@@ -74,14 +77,14 @@ public class LockHandler {
     if (getLockData(location) != null)
       return LockResult.LOCKED;
     // check max expire
-    if (length.getTime() > config.getMaxTime().getTime())
+    if (length.getTime() > lock_config.getMaxTime().getTime())
       return LockResult.MAX_EXPIRE;
     // check money
     int price = getLockPrice(length);
     if (economy.getBalance(player) < price)
       return LockResult.NOT_ENOUGH_MONEY;
     // add length to now
-    LocalDateTime expire = LocalDateTime.now()
+    LocalDateTime expire = LocalDateTime.now(general_config.getZoneId())
         .plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
     // lock process
     boolean result = db.setLockData(player, location, expire);
@@ -119,7 +122,7 @@ public class LockHandler {
       return LockResult.NOT_OWNER;
     // check max expire
     LocalDateTime new_expire = lock_data.getExpireDate().plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
-    if (new_expire.isAfter(LocalDateTime.now().plus(config.getMaxTime().getTime(), java.time.temporal.ChronoUnit.MILLIS)))
+    if (new_expire.isAfter(LocalDateTime.now(general_config.getZoneId()).plus(lock_config.getMaxTime().getTime(), java.time.temporal.ChronoUnit.MILLIS)))
       return LockResult.MAX_EXPIRE;
     // extend process
     boolean result = db.removeLockData(location) && db.setLockData(player, location, new_expire);
@@ -130,7 +133,7 @@ public class LockHandler {
 
   // get lock price
   public int getLockPrice(Time length) {
-    return (int) (config.getPrice() * Math.ceil(length.getTime() / config.getUnit().getMillis()));
+    return (int) (lock_config.getPrice() * Math.ceil(length.getTime() / lock_config.getUnit().getMillis()));
   }
 
   public boolean isOwner(Player player, LockData data) {
@@ -138,11 +141,11 @@ public class LockHandler {
   }
 
   public boolean isValidTime(int time){
-    return 0 < time && time <= config.getMax();
+    return 0 < time && time <= lock_config.getMax();
   }
 
   public Time getTimeFromUnit(int time){
-    return new Time(config.getUnit().getMillis() * time);
+    return new Time(lock_config.getUnit().getMillis() * time);
   }
 
   // Derive one coordinate from a block with two coordinates
@@ -165,7 +168,7 @@ public class LockHandler {
 
   // return true if lock is expired
   public boolean validate(LockData data) {
-    if (data.getExpireDate().isBefore(LocalDateTime.now())) {
+    if (data.getExpireDate().isBefore(LocalDateTime.now(general_config.getZoneId()))) {
       db.removeLockData(data.getLockId());
       return true;
     }
