@@ -18,6 +18,7 @@ public class LockConfig extends Config {
       unit = LockUnit.fromChar(config.getString("lock.unit"));
     } catch (IllegalArgumentException e) {
       plugin.getLogger().warning("Invalid lock unit. Set to default value: DAY");
+      unit = LockUnit.DAY;
     }
 
     price = config.getInt("lock.price");
