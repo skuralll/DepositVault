@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class CommandBase implements CommandExecutor {
 
   private HashMap<String, SubCommand> commands;
-  private String default_command = null;
+  private String default_command = "ui";
 
   public CommandBase() {
     this.commands = new HashMap<String, SubCommand>();
