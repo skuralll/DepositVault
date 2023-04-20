@@ -7,12 +7,12 @@ import org.bukkit.command.CommandSender;
 abstract public class SubCommand {
 
   protected DepositVault plugin;
-  protected MessageConfig message;
+  protected MessageConfig messages;
   protected CommandExecuter executer = CommandExecuter.BOTH;
 
   public SubCommand(DepositVault plugin) {
     this.plugin = plugin;
-    this.message = plugin.getConfigLoader().getMessagesConfig();
+    this.messages = plugin.getConfigLoader().getMessagesConfig();
   }
 
   abstract public boolean onCommand(CommandSender sender, String[] args);
