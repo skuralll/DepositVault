@@ -1,11 +1,10 @@
 package com.skuralll.depositvault.config.groups;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.config.Config;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class DBConfig extends Config {
+public class DBConfig {
 
   private String host;
   private int port;
