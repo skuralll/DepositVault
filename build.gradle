@@ -18,6 +18,10 @@ repositories {
     }
     maven { url 'https://jitpack.io' }
     maven { url 'https://repo.xenondevs.xyz/releases' }
+    maven {
+        name = "himajyun-repo"
+        url = "https://himajyun.github.io/mvn-repo/"
+    }
 }
 
 dependencies {
@@ -26,6 +30,7 @@ dependencies {
     implementation 'com.google.http-client:google-http-client:1.43.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation "xyz.xenondevs.invui:invui:1.0"
+    implementation "jp.jyn:JBukkitLib:2.0.0"
 }
 
 def targetJavaVersion = 17
