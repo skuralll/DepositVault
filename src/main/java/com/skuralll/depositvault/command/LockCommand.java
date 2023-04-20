@@ -17,9 +17,9 @@ public class LockCommand extends SubCommand {
   LockHandler handler;
   NormalCache<UUID, Time> cache;
 
-  public LockCommand() {
+  public LockCommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.PLAYER;
-    DepositVault plugin = DepositVault.getInstance();
     economy = plugin.getEconomy();
     config = plugin.getConfigLoader().getMainConfig().getLock();
     handler = plugin.getHandler();
@@ -37,7 +37,9 @@ public class LockCommand extends SubCommand {
     int time = Integer.parseInt(args[1]);
     if (!handler.isValidTime(time)) {
       // time is out of range
-      sender.sendMessage("Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name().toLowerCase() + "s.");
+      sender.sendMessage(
+          "Time is out of range. Max time is " + config.getMax() + " " + config.getUnit().name()
+              .toLowerCase() + "s.");
       return true;
     }
 

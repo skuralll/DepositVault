@@ -11,7 +11,8 @@ public class InfoCommand extends SubCommand {
 
   protected CommandExecuter executer = CommandExecuter.BOTH;
 
-  public InfoCommand() {
+  public InfoCommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.BOTH;
     description = DepositVault.getInstance().getDescription();
   }

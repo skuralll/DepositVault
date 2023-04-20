@@ -10,7 +10,8 @@ public class CheckCommand extends SubCommand {
 
   private TimerCache<UUID> cache;
 
-  public CheckCommand() {
+  public CheckCommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.PLAYER;
     cache = DepositVault.getInstance().getCacheStore().getCheckCommandCache();
   }

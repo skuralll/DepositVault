@@ -11,7 +11,8 @@ public class UICommand extends SubCommand {
 
   private TimerCache<UUID> cache;
 
-  public UICommand() {
+  public UICommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.PLAYER;
     cache = DepositVault.getInstance().getCacheStore().getUICommandCache();
   }

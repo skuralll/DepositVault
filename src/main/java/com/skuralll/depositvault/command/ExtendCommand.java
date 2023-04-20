@@ -18,9 +18,9 @@ public class ExtendCommand extends SubCommand {
   LockHandler handler;
   NormalCache<UUID, Time> cache;
 
-  public ExtendCommand() {
+  public ExtendCommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.PLAYER;
-    DepositVault plugin = DepositVault.getInstance();
     economy = plugin.getEconomy();
     config = plugin.getConfigLoader().getMainConfig().getLock();
     handler = plugin.getHandler();

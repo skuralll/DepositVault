@@ -10,7 +10,8 @@ public class UnlockCommand extends SubCommand {
 
   TimerCache<UUID> cache;
 
-  public UnlockCommand() {
+  public UnlockCommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.PLAYER;
     cache = DepositVault.getInstance().getCacheStore().getUnlockCommandCache();
   }
