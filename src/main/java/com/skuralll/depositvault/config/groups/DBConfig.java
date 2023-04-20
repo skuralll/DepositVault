@@ -1,6 +1,8 @@
-package com.skuralll.depositvault.config;
+package com.skuralll.depositvault.config.groups;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.Config;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class DBConfig extends Config {
@@ -11,8 +13,7 @@ public class DBConfig extends Config {
   private String password;
   private String database;
 
-  public DBConfig() {
-    FileConfiguration config = DepositVault.getInstance().getConfig();
+  public DBConfig(ConfigurationSection config) {
     host = config.getString("db.host");
     port = config.getInt("db.port");
     user = config.getString("db.user");

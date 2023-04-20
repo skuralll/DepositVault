@@ -3,7 +3,7 @@ package com.skuralll.depositvault.listener;
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.NormalCache;
 import com.skuralll.depositvault.cache.TimerCache;
-import com.skuralll.depositvault.config.LockConfig;
+import com.skuralll.depositvault.config.groups.LockConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
 import com.skuralll.depositvault.model.LockData;
@@ -20,7 +20,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerChannelEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 
@@ -40,7 +39,7 @@ public class PlayerEventListener implements Listener {
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
     handler = plugin.getHandler();
-    config = plugin.getConfigLoader().getLockConfig();
+    config = plugin.getConfigLoader().getMainConfig().getLock();
     check_cache = plugin.getCacheStore().getCheckCommandCache();
     unlock_cache = plugin.getCacheStore().getUnlockCommandCache();
     ui_cache = plugin.getCacheStore().getUICommandCache();

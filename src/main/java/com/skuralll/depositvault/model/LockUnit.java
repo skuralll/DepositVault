@@ -1,4 +1,4 @@
-package com.skuralll.depositvault.config;
+package com.skuralll.depositvault.model;
 
 public enum LockUnit {
   DAY("d", 86400000),

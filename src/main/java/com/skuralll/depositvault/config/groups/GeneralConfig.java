@@ -1,17 +1,18 @@
-package com.skuralll.depositvault.config;
+package com.skuralll.depositvault.config.groups;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.Config;
 import java.time.ZoneId;
 import java.util.Objects;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class GeneralConfig extends Config{
+public class GeneralConfig extends Config {
 
   private ZoneId zone_id;
 
-  public GeneralConfig() {
+  public GeneralConfig(ConfigurationSection config) {
     DepositVault plugin = DepositVault.getInstance();
-    FileConfiguration config = plugin.getConfig();
 
     try {
       zone_id = ZoneId.of(Objects.requireNonNull(config.getString("timezone")));

@@ -2,8 +2,7 @@ package com.skuralll.depositvault.ui.item;
 
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.NormalCache;
-import com.skuralll.depositvault.config.LockConfig;
-import com.skuralll.depositvault.handler.LockHandler;
+import com.skuralll.depositvault.config.groups.LockConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,7 +33,7 @@ public class ProtectItem extends AbstractItem {
 
   @Override
   public ItemProvider getItemProvider() {
-    LockConfig config = plugin.getConfigLoader().getLockConfig();
+    LockConfig config = plugin.getConfigLoader().getMainConfig().getLock();
     ItemBuilder item = new ItemBuilder(Material.CHEST);
     item.setDisplayName("" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[" + title + "]" + ChatColor.RESET);
     item.addLoreLines(ChatColor.YELLOW + "Price: " + ChatColor.DARK_PURPLE + config.getPrice() + "/" + config.getUnit().getName());

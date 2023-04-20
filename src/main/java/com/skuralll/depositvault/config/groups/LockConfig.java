@@ -1,7 +1,10 @@
-package com.skuralll.depositvault.config;
+package com.skuralll.depositvault.config.groups;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.Config;
+import com.skuralll.depositvault.model.LockUnit;
 import java.sql.Time;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class LockConfig extends Config {
@@ -10,9 +13,8 @@ public class LockConfig extends Config {
   private int price;
   private int max;
 
-  public LockConfig() {
+  public LockConfig(ConfigurationSection config) {
     DepositVault plugin = DepositVault.getInstance();
-    FileConfiguration config = plugin.getConfig();
 
     try {
       unit = LockUnit.fromChar(config.getString("lock.unit"));
