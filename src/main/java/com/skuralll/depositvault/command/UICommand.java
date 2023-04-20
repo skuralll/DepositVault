@@ -21,7 +21,7 @@ public class UICommand extends SubCommand {
   public boolean onCommand(CommandSender sender, String[] args) {
     Player player = (Player) sender;
     cache.put(player.getUniqueId(), 60000L);
-    sender.sendMessage("Right click on the chest you want to open UI.");
+    sender.sendMessage(messages.please_click.apply());
     return true;
   }
 

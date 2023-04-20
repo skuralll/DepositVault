@@ -20,7 +20,7 @@ public class CheckCommand extends SubCommand {
   public boolean onCommand(CommandSender sender, String[] args) {
     Player player = (Player) sender;
     cache.put(player.getUniqueId(), 60000L);
-    sender.sendMessage("Right click on the chest you want to check.");
+    sender.sendMessage(messages.please_click.apply());
     return true;
   }
 
