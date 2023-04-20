@@ -3,7 +3,7 @@ package com.skuralll.depositvault;
 import com.skuralll.depositvault.cache.CacheStore;
 import com.skuralll.depositvault.command.*;
 import com.skuralll.depositvault.config.ConfigLoader;
-import com.skuralll.depositvault.config.DBConfig;
+import com.skuralll.depositvault.config.groups.DBConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.listener.BlockEventListener;
@@ -38,8 +38,8 @@ public final class DepositVault extends JavaPlugin {
   public void onEnable() {
     instance = this;
 
-    saveDefaultConfig();
     config = new ConfigLoader();
+    config.reload();
 
     cache = new CacheStore();
 
@@ -106,7 +106,7 @@ public final class DepositVault extends JavaPlugin {
 
   // set up database
   private boolean setupDatabase() {
-    DBConfig db_config = config.getDBConfig();
+    DBConfig db_config = config.getMainConfig().getDB();
     Database _db = new Database(
         db_config.getHost(),
         db_config.getPort(),

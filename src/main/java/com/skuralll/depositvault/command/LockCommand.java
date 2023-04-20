@@ -2,7 +2,7 @@ package com.skuralll.depositvault.command;
 
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.NormalCache;
-import com.skuralll.depositvault.config.LockConfig;
+import com.skuralll.depositvault.config.groups.LockConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import java.sql.Time;
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class LockCommand extends SubCommand {
     executer = CommandExecuter.PLAYER;
     DepositVault plugin = DepositVault.getInstance();
     economy = plugin.getEconomy();
-    config = plugin.getConfigLoader().getLockConfig();
+    config = plugin.getConfigLoader().getMainConfig().getLock();
     handler = plugin.getHandler();
     cache = plugin.getCacheStore().getLockCommandCache();
   }

@@ -1,33 +1,31 @@
 package com.skuralll.depositvault.config;
 
 import com.skuralll.depositvault.DepositVault;
+import jp.jyn.jbukkitlib.config.YamlLoader;
 
 public class ConfigLoader {
 
-  private DepositVault plugin;
-
-  // configs
-  private DBConfig db_config;
-  private LockConfig lock_config;
-  private GeneralConfig general_config;
+  private final YamlLoader main_loader;
+  private MainConfig main_config;
 
   public ConfigLoader() {
-    plugin = DepositVault.getInstance();
-    db_config = new DBConfig();
-    lock_config = new LockConfig();
-    general_config = new GeneralConfig();
+    DepositVault plugin = DepositVault.getInstance();
+    main_loader = new YamlLoader(plugin, "config.yml");
   }
 
-  public DBConfig getDBConfig() {
-    return db_config;
+  // reload all configs
+  public void reload(){
+    main_loader.saveDefaultConfig();
+
+    if(main_config != null){
+      main_loader.reloadConfig();
+    }
+
+    main_config = new MainConfig(main_loader.getConfig());
   }
 
-  public LockConfig getLockConfig() {
-    return lock_config;
-  }
-
-  public GeneralConfig getGeneralConfig() {
-    return general_config;
+  public MainConfig getMainConfig() {
+    return main_config;
   }
 
 }

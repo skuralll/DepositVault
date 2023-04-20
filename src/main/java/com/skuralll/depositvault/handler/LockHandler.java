@@ -1,8 +1,8 @@
 package com.skuralll.depositvault.handler;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.config.GeneralConfig;
-import com.skuralll.depositvault.config.LockConfig;
+import com.skuralll.depositvault.config.groups.GeneralConfig;
+import com.skuralll.depositvault.config.groups.LockConfig;
 import com.skuralll.depositvault.db.Database;
 import com.skuralll.depositvault.model.LockData;
 import java.sql.Time;
@@ -29,8 +29,8 @@ public class LockHandler {
   public LockHandler() {
     plugin = DepositVault.getInstance();
     economy = plugin.getEconomy();
-    lock_config = plugin.getConfigLoader().getLockConfig();
-    general_config = plugin.getConfigLoader().getGeneralConfig();
+    lock_config = plugin.getConfigLoader().getMainConfig().getLock();
+    general_config = plugin.getConfigLoader().getMainConfig().getGeneral();
     db = plugin.getDatabase();
   }
 
