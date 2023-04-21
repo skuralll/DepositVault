@@ -1,7 +1,9 @@
-# meta
+## meta
 version: 1
-# messages
+## messages
 please_click: '&eRight click on the chest'
 command_usage: 'Usage: {command}'
-time_is_out_of_range: 'Time is out of range. Max time is {time}{unit}s.'
-not_enough_money: "You don't have enough money"
+time_is_out_of_range: '&cTime is out of range. Max time is {time}{unit}s.'
+not_enough_money: "&cYou don't have enough money"
+locked_by_myself: '&eYou have this chest locked, please unlock it.'
+locked_by_other: '&cThis chest is locked by {player}'

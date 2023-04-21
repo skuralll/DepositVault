@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.listener;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.model.LockData;
 import org.bukkit.ChatColor;
@@ -19,10 +20,12 @@ public class BlockEventListener implements Listener {
 
   private final DepositVault plugin;
   private final LockHandler handler;
+  private final MessageConfig message;
 
   public BlockEventListener() {
     plugin = DepositVault.getInstance();
     handler = plugin.getHandler();
+    message = plugin.getConfigLoader().getMessagesConfig();
   }
 
   @EventHandler
@@ -42,28 +45,26 @@ public class BlockEventListener implements Listener {
       event.setCancelled(true);
       if (handler.isOwner(player, lock_data)) {
         // owner
-        player.sendMessage(
-            ChatColor.YELLOW
-                + "You have this chest locked, please use /dvault unlock to unlock it.");
+        player.sendMessage(message.locked_by_myself.apply());
       } else {
         // not owner
         String owner_name = handler.getUserName(lock_data.getUserId());
         if (owner_name == null)
           owner_name = "Unknown";
-        player.sendMessage(ChatColor.RED + "This block is locked by " + owner_name + ".");
+        player.sendMessage(message.locked_by_other.apply("player", owner_name));
       }
     }
   }
 
   private final int[][] arounds = new int[][]{
-          {-1,-1},
-          {-1,0},
-          {-1,1},
-          {0,-1},
-          {0,1},
-          {1,-1},
-          {1,0},
-          {1,1}
+      {-1, -1},
+      {-1, 0},
+      {-1, 1},
+      {0, -1},
+      {0, 1},
+      {1, -1},
+      {1, 0},
+      {1, 1}
   };
 
   @EventHandler
@@ -76,14 +77,14 @@ public class BlockEventListener implements Listener {
 
     Location location = block.getLocation();
     // protect locked inventory-holder
-    for(int[] pos : arounds){
+    for (int[] pos : arounds) {
       // check is around block chest
       Location around_location = location.clone().add(pos[0], 0, pos[1]);
       Block around_block = around_location.getBlock();
       if (!around_block.getType().equals(Material.CHEST))
         continue;
       // check is around block same direction
-      if(!((Chest) around_block.getBlockData()).getFacing().equals(direction))
+      if (!((Chest) around_block.getBlockData()).getFacing().equals(direction))
         continue;
       // check is around block locked
       LockData lock_data = handler.getLockData(around_location);

@@ -14,6 +14,8 @@ public class MessageConfig {
   public final TemplateParser command_usage;
   public final TemplateParser time_is_out_of_range;
   public final TemplateParser not_enough_money;
+  public final TemplateParser locked_by_myself;
+  public final TemplateParser locked_by_other;
 
   public MessageConfig(ConfigurationSection config) {
     version = config.getInt("version");
@@ -22,6 +24,8 @@ public class MessageConfig {
     command_usage = parse(config.getString("command_usage"));
     time_is_out_of_range = parse(config.getString("time_is_out_of_range"));
     not_enough_money = parse(config.getString("not_enough_money"));
+    locked_by_myself = parse(config.getString("locked_by_myself"));
+    locked_by_other = parse(config.getString("locked_by_other"));
   }
 
   private TemplateParser parse(String value) {
