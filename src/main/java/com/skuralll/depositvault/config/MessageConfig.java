@@ -16,6 +16,14 @@ public class MessageConfig {
   public final TemplateParser not_enough_money;
   public final TemplateParser locked_by_myself;
   public final TemplateParser locked_by_other;
+  public final TemplateParser success_lock;
+  public final TemplateParser success_unlock;
+  public final TemplateParser success_extend;
+  public final TemplateParser not_locked;
+  public final TemplateParser locked;
+  public final TemplateParser not_your_chest;
+  public final TemplateParser max_expiration;
+  public final TemplateParser sql_error;
 
   public MessageConfig(ConfigurationSection config) {
     version = config.getInt("version");
@@ -26,6 +34,14 @@ public class MessageConfig {
     not_enough_money = parse(config.getString("not_enough_money"));
     locked_by_myself = parse(config.getString("locked_by_myself"));
     locked_by_other = parse(config.getString("locked_by_other"));
+    success_lock = parse(config.getString("success_lock"));
+    success_unlock = parse(config.getString("success_unlock"));
+    success_extend = parse(config.getString("success_extend"));
+    not_locked = parse(config.getString("not_locked"));
+    locked = parse(config.getString("locked"));
+    not_your_chest = parse(config.getString("not_your_chest"));
+    max_expiration = parse(config.getString("max_expiration"));
+    sql_error = parse(config.getString("sql_error"));
   }
 
   private TemplateParser parse(String value) {

@@ -3,6 +3,7 @@ package com.skuralll.depositvault.listener;
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.NormalCache;
 import com.skuralll.depositvault.cache.TimerCache;
+import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.config.groups.LockConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
@@ -27,7 +28,7 @@ public class PlayerEventListener implements Listener {
 
   private final DepositVault plugin;
   private final LockHandler handler;
-  private final LockConfig config;
+  private final MessageConfig message;
   private final TimerCache<UUID> check_cache;
   private final TimerCache<UUID> unlock_cache;
   private final TimerCache<UUID> ui_cache;
@@ -39,7 +40,7 @@ public class PlayerEventListener implements Listener {
   public PlayerEventListener() {
     plugin = DepositVault.getInstance();
     handler = plugin.getHandler();
-    config = plugin.getConfigLoader().getMainConfig().getLock();
+    message = plugin.getConfigLoader().getMessagesConfig();
     check_cache = plugin.getCacheStore().getCheckCommandCache();
     unlock_cache = plugin.getCacheStore().getUnlockCommandCache();
     ui_cache = plugin.getCacheStore().getUICommandCache();
@@ -93,7 +94,7 @@ public class PlayerEventListener implements Listener {
     if (lock_length != null) {
       event.setCancelled(true);
       LockResult result = handler.lock(player, location, lock_length);
-      player.sendMessage(result.toString());
+      player.sendMessage(handler.getLockResultMessage(result));
       return;
     }
 
@@ -101,7 +102,7 @@ public class PlayerEventListener implements Listener {
     if (unlock_cache.check(uuid)) {
       event.setCancelled(true);
       LockResult result = handler.unlock(player, location);
-      player.sendMessage(result.toString());
+      player.sendMessage(handler.getLockResultMessage(result));
       return;
     }
 
@@ -110,7 +111,7 @@ public class PlayerEventListener implements Listener {
     if (extend_length != null) {
       event.setCancelled(true);
       LockResult result = handler.extend(player, location, extend_length);
-      player.sendMessage(result.toString());
+      player.sendMessage(handler.getLockResultMessage(result));
       return;
     }
 
@@ -128,7 +129,7 @@ public class PlayerEventListener implements Listener {
         String owner_name = handler.getUserName(lock_data.getUserId());
         if (owner_name == null)
           owner_name = "Unknown";
-        player.sendMessage(ChatColor.RED + "This block is locked by " + owner_name + ".");
+        player.sendMessage(message.locked_by_other.apply("player", owner_name));
         event.setCancelled(true);
         return;
       }
@@ -136,27 +137,27 @@ public class PlayerEventListener implements Listener {
   }
 
   @EventHandler
-  public void onPlayerChat(AsyncChatEvent event){
+  public void onPlayerChat(AsyncChatEvent event) {
     Player player = event.getPlayer();
     String message = event.signedMessage().message();
 
     // lock-ui process
     Location lock_location = lock_ui_cache.pop(event.getPlayer().getUniqueId());
-    if(lock_location != null){
+    if (lock_location != null) {
       event.setCancelled(true);
       int time = Integer.parseInt(message);
       LockResult result = handler.lock(player, lock_location, handler.getTimeFromUnit(time));
-      player.sendMessage(result.toString());
+      player.sendMessage(handler.getLockResultMessage(result));
       return;
     }
 
     // extend-ui process
     Location extend_location = extend_ui_cache.pop(event.getPlayer().getUniqueId());
-    if(extend_location != null){
+    if (extend_location != null) {
       event.setCancelled(true);
       int time = Integer.parseInt(message);
       LockResult result = handler.extend(player, extend_location, handler.getTimeFromUnit(time));
-      player.sendMessage(result.toString());
+      player.sendMessage(handler.getLockResultMessage(result));
       return;
     }
   }
