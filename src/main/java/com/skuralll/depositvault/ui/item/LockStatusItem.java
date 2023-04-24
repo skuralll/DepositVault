@@ -6,6 +6,7 @@ import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.model.LockData;
 import com.skuralll.depositvault.utils.Utils;
 import java.util.ArrayList;
+import jp.jyn.jbukkitlib.config.parser.template.StringVariable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,6 +36,8 @@ public class LockStatusItem extends AsyncItem {
             @Override
             public ItemStack get(@Nullable String lang) {
               LockHandler handler = DepositVault.getInstance().getHandler();
+              MessageConfig message = DepositVault.getInstance().getConfigLoader()
+                  .getMessagesConfig();
               LockData data = handler.getLockData(location);
               // create itemstack
               ItemStack item;
@@ -45,20 +48,26 @@ public class LockStatusItem extends AsyncItem {
               }
               // set meta
               ItemMeta meta = item.getItemMeta();
-              meta.setDisplayName(
-                  "" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[Status]"
-                      + ChatColor.RESET);
+              meta.setDisplayName(message.gui_status.apply());
               ArrayList<String> lores = new ArrayList<>();
-              lores.add(ChatColor.YELLOW + "Locked: " + ChatColor.RESET + (data == null ? "False"
-                  : "True" + " (ID:" + data.getLockId() + ")"));
+
+              lores.add(message.gui_status_lock.apply(
+                  StringVariable.init()
+                      .put("state", data == null ? "False" : "True")
+                      .put("id", data.getLockId())
+              ));
               if (data != null) {
                 int user_id = data.getUserId();
                 String user_name = handler.getUserName(user_id);
-                lores.add(
-                    ChatColor.YELLOW + "Owner: " + ChatColor.RESET + (user_name == null ? "UNKNOWN"
-                        : user_name) + " (ID:" + user_id + ")");
-                lores.add(ChatColor.YELLOW + "Expiration: " + ChatColor.RESET + data.getExpireDate()
-                    .toString());
+                lores.add(message.gui_status_owner.apply(
+                    StringVariable.init()
+                        .put("name", user_name)
+                        .put("id", user_id)
+                ));
+                lores.add(message.gui_status_expiration.apply(
+                    StringVariable.init()
+                        .put("time", data.getExpireDate())
+                ));
               }
               meta.setLore(lores);
               item.setItemMeta(meta);

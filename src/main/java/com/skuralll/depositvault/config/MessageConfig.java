@@ -27,6 +27,14 @@ public class MessageConfig {
   public final TemplateParser enter_the_time;
   public final TemplateParser click_again;
   public final TemplateParser loading;
+  public final TemplateParser gui_lock;
+  public final TemplateParser gui_extend;
+  public final TemplateParser gui_unlock;
+  public final TemplateParser gui_status;
+  public final TemplateParser gui_price;
+  public final TemplateParser gui_status_lock;
+  public final TemplateParser gui_status_owner;
+  public final TemplateParser gui_status_expiration;
 
   public MessageConfig(ConfigurationSection config) {
     version = config.getInt("version");
@@ -48,6 +56,14 @@ public class MessageConfig {
     enter_the_time = parse(config.getString("enter_the_time"));
     click_again = parse(config.getString("click_again"));
     loading = parse(config.getString("loading"));
+    gui_lock = parse(config.getString("gui_lock"));
+    gui_extend = parse(config.getString("gui_extend"));
+    gui_unlock = parse(config.getString("gui_unlock"));
+    gui_status = parse(config.getString("gui_status"));
+    gui_price = parse(config.getString("gui_price"));
+    gui_status_lock = parse(config.getString("gui_status_lock"));
+    gui_status_owner = parse(config.getString("gui_status_owner"));
+    gui_status_expiration = parse(config.getString("gui_status_expiration"));
   }
 
   private TemplateParser parse(String value) {

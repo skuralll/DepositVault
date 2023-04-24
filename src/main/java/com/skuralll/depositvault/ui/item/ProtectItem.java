@@ -4,6 +4,8 @@ import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.NormalCache;
 import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.config.groups.LockConfig;
+import jp.jyn.jbukkitlib.config.parser.template.StringVariable;
+import jp.jyn.jbukkitlib.config.parser.template.TemplateVariable;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,10 +40,11 @@ public class ProtectItem extends AbstractItem {
   public ItemProvider getItemProvider() {
     LockConfig config = plugin.getConfigLoader().getMainConfig().getLock();
     ItemBuilder item = new ItemBuilder(Material.CHEST);
-    item.setDisplayName("" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[" + title + "]"
-        + ChatColor.RESET);
-    item.addLoreLines(ChatColor.YELLOW + "Price: " + ChatColor.DARK_PURPLE + config.getPrice() + "/"
-        + config.getUnit().getName());
+    item.setDisplayName(title);
+    TemplateVariable variable = StringVariable.init()
+        .put("price", config.getPrice())
+        .put("unit", config.getUnit().getName());
+    item.addLoreLines(message.gui_price.apply(variable));
     return item;
   }
 

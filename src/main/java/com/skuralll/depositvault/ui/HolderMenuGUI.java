@@ -2,6 +2,7 @@ package com.skuralll.depositvault.ui;
 
 import com.skuralll.depositvault.DepositVault;
 import com.skuralll.depositvault.cache.CacheStore;
+import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.model.LockData;
 import com.skuralll.depositvault.ui.item.LockStatusItem;
@@ -31,6 +32,7 @@ public class HolderMenuGUI extends GUI {
   @Override
   public Gui getGui() {
     DepositVault plugin = DepositVault.getInstance();
+    MessageConfig message = plugin.getConfigLoader().getMessagesConfig();
     LockHandler handler = plugin.getHandler();
     CacheStore caches = plugin.getCacheStore();
     LockData data = handler.getLockData(location);
@@ -40,12 +42,14 @@ public class HolderMenuGUI extends GUI {
     AbstractItem extend_item = new SimpleItem(new ItemBuilder(Material.AIR));
     if (data == null) {
       // not locked
-      lock_item = new ProtectItem(player, location, "Lock", caches.getLockUICache());
+      lock_item = new ProtectItem(player, location, message.gui_lock.apply(),
+          caches.getLockUICache());
     } else {
       // locked
       if (handler.isOwner(player, data)) {
         lock_item = new UnLockItem(player, location);
-        extend_item = new ProtectItem(player, location, "Extend", caches.getExtendUICache());
+        extend_item = new ProtectItem(player, location, message.gui_extend.apply(),
+            caches.getExtendUICache());
       } else {
         lock_item = new SimpleItem(
             new ItemBuilder(Material.BARRIER).setDisplayName(message.not_your_chest.apply()));

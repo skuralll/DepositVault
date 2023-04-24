@@ -34,8 +34,7 @@ public class UnLockItem extends AbstractItem {
   @Override
   public ItemProvider getItemProvider() {
     ItemBuilder item = new ItemBuilder(Material.ENDER_CHEST).setDisplayName(
-        "" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "Unlock" + ChatColor.RESET
-    );
+        message.gui_unlock.apply());
     if (clicked)
       item.addLoreLines(message.click_again.apply());
     return item;
