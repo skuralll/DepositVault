@@ -1,4 +1,5 @@
 # General configuration
+version: 1
 timezone: Asia/Tokyo # Timezone
 # Database configuration
 db:

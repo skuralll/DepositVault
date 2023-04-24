@@ -10,7 +10,8 @@ public class UnlockCommand extends SubCommand {
 
   TimerCache<UUID> cache;
 
-  public UnlockCommand() {
+  public UnlockCommand(DepositVault plugin) {
+    super(plugin);
     executer = CommandExecuter.PLAYER;
     cache = DepositVault.getInstance().getCacheStore().getUnlockCommandCache();
   }
@@ -19,7 +20,7 @@ public class UnlockCommand extends SubCommand {
   public boolean onCommand(CommandSender sender, String[] args) {
     Player player = (Player) sender;
     cache.put(player.getUniqueId(), 60000L);
-    sender.sendMessage("Right click on the chest you want to unlock.");
+    sender.sendMessage(messages.please_click.apply());
     return true;
   }
 

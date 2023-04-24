@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.handler;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.config.groups.GeneralConfig;
 import com.skuralll.depositvault.config.groups.LockConfig;
 import com.skuralll.depositvault.db.Database;
@@ -24,6 +25,7 @@ public class LockHandler {
   private final Economy economy;
   private final LockConfig lock_config;
   private final GeneralConfig general_config;
+  private final MessageConfig message_config;
   private final Database db;
 
   public LockHandler() {
@@ -31,6 +33,7 @@ public class LockHandler {
     economy = plugin.getEconomy();
     lock_config = plugin.getConfigLoader().getMainConfig().getLock();
     general_config = plugin.getConfigLoader().getMainConfig().getGeneral();
+    message_config = plugin.getConfigLoader().getMessagesConfig();
     db = plugin.getDatabase();
   }
 
@@ -92,7 +95,7 @@ public class LockHandler {
       return LockResult.SQL_ERROR;
     // reduce money
     economy.withdrawPlayer(player, price);
-    return LockResult.SUCCESS;
+    return LockResult.SUCCESS_LOCK;
   }
 
   // unlock inventory holder
@@ -108,7 +111,7 @@ public class LockHandler {
     boolean result = db.removeLockData(location);
     if (!result)
       return LockResult.SQL_ERROR;
-    return LockResult.SUCCESS;
+    return LockResult.SUCCESS_UNLOCK;
   }
 
   // extend expiration
@@ -121,30 +124,33 @@ public class LockHandler {
     if (!isOwner(player, lock_data))
       return LockResult.NOT_OWNER;
     // check max expire
-    LocalDateTime new_expire = lock_data.getExpireDate().plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
-    if (new_expire.isAfter(LocalDateTime.now(general_config.getZoneId()).plus(lock_config.getMaxTime().getTime(), java.time.temporal.ChronoUnit.MILLIS)))
+    LocalDateTime new_expire = lock_data.getExpireDate()
+        .plus(length.getTime(), java.time.temporal.ChronoUnit.MILLIS);
+    if (new_expire.isAfter(LocalDateTime.now(general_config.getZoneId())
+        .plus(lock_config.getMaxTime().getTime(), java.time.temporal.ChronoUnit.MILLIS)))
       return LockResult.MAX_EXPIRE;
     // extend process
     boolean result = db.removeLockData(location) && db.setLockData(player, location, new_expire);
     if (!result)
       return LockResult.SQL_ERROR;
-    return LockResult.SUCCESS;
+    return LockResult.SUCCESS_EXTEND;
   }
 
   // get lock price
   public int getLockPrice(Time length) {
-    return (int) (lock_config.getPrice() * Math.ceil(length.getTime() / lock_config.getUnit().getMillis()));
+    return (int) (lock_config.getPrice() * Math.ceil(
+        length.getTime() / lock_config.getUnit().getMillis()));
   }
 
   public boolean isOwner(Player player, LockData data) {
     return data.getUserId() == getUserId(player);
   }
 
-  public boolean isValidTime(int time){
+  public boolean isValidTime(int time) {
     return 0 < time && time <= lock_config.getMax();
   }
 
-  public Time getTimeFromUnit(int time){
+  public Time getTimeFromUnit(int time) {
     return new Time(lock_config.getUnit().getMillis() * time);
   }
 
@@ -173,6 +179,32 @@ public class LockHandler {
       return true;
     }
     return false;
+  }
+
+  // get lock result message
+  public String getLockResultMessage(LockResult result) {
+    switch (result) {
+      case SUCCESS_LOCK:
+        return message_config.success_lock.apply();
+      case SUCCESS_UNLOCK:
+        return message_config.success_unlock.apply();
+      case SUCCESS_EXTEND:
+        return message_config.success_extend.apply();
+      case NOT_LOCKED:
+        return message_config.not_locked.apply();
+      case LOCKED:
+        return message_config.locked.apply();
+      case NOT_OWNER:
+        return message_config.not_your_chest.apply();
+      case NOT_ENOUGH_MONEY:
+        return message_config.not_enough_money.apply();
+      case MAX_EXPIRE:
+        return message_config.max_expiration.apply();
+      case SQL_ERROR:
+        return message_config.sql_error.apply();
+      default:
+        return "Unknown error";
+    }
   }
 
 

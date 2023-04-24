@@ -64,12 +64,12 @@ public final class DepositVault extends JavaPlugin {
 
     // register commands
     CommandBase commandBase = new CommandBase();
-    commandBase.register("info", new InfoCommand());
-    commandBase.register("check", new CheckCommand());
-    commandBase.register("lock", new LockCommand());
-    commandBase.register("unlock", new UnlockCommand());
-    commandBase.register("extend", new ExtendCommand());
-    commandBase.register("ui", new UICommand());
+    commandBase.register("info", new InfoCommand(this));
+    commandBase.register("check", new CheckCommand(this));
+    commandBase.register("lock", new LockCommand(this));
+    commandBase.register("unlock", new UnlockCommand(this));
+    commandBase.register("extend", new ExtendCommand(this));
+    commandBase.register("ui", new UICommand(this));
     getCommand("dvault").setExecutor(commandBase);
 
     // register events

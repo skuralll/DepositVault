@@ -1,0 +1,29 @@
+## meta
+version: 1
+## messages
+# messages
+please_click: '&eRight click on the chest'
+command_usage: 'Usage: {command}'
+time_is_out_of_range: '&cTime is out of range. Max time is {time}{unit}s.'
+not_enough_money: "&cYou don't have enough money"
+locked_by_myself: '&eYou have this chest locked, please unlock it.'
+locked_by_other: '&cThis chest is locked by {player}'
+success_lock: '&aYou have successfully locked this chest.'
+success_unlock: '&aYou have successfully unlocked this chest.'
+success_extend: '&aYou have successfully extended the expiration of this chest.'
+not_locked: '&cThis chest is not locked.'
+locked: '&cThis chest is locked.'
+not_your_chest: '&cThis is not your chest.'
+max_expiration: '&cYou have exceeded the maximum expiration time.'
+sql_error: '&cSQL error occurred'
+enter_the_time: 'Please enter the time in the chat.'
+click_again: '&cPlease click again.'
+loading: '&eLoading...'
+gui_lock: '&r&6&lLock'
+gui_extend: '&r&6&lExtend'
+gui_unlock: '&r&6&lUnlock'
+gui_status: '&r&6&lStatus'
+gui_price: '&ePrice: &5{price}/{unit}'
+gui_status_lock: '&eLocked: &5{state} (ID:{id})'
+gui_status_owner: '&eOwner: &5{name} (ID:{id})'
+gui_status_expiration: '&eExpiration: &5{time}'

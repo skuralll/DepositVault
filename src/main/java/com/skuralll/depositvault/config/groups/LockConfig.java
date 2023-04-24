@@ -1,13 +1,12 @@
 package com.skuralll.depositvault.config.groups;
 
 import com.skuralll.depositvault.DepositVault;
-import com.skuralll.depositvault.config.Config;
 import com.skuralll.depositvault.model.LockUnit;
 import java.sql.Time;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class LockConfig extends Config {
+public class LockConfig {
 
   private LockUnit unit;
   private int price;
