@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.ui.item;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.handler.LockResult;
 import org.bukkit.ChatColor;
@@ -16,6 +17,7 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 
 public class UnLockItem extends AbstractItem {
 
+  private MessageConfig message;
   private LockHandler handler;
   private Player player;
   private Location location;
@@ -23,6 +25,7 @@ public class UnLockItem extends AbstractItem {
   private boolean clicked = false;
 
   public UnLockItem(Player player, Location location) {
+    this.message = DepositVault.getInstance().getConfigLoader().getMessagesConfig();
     this.handler = DepositVault.getInstance().getHandler();
     this.player = player;
     this.location = location;
@@ -31,15 +34,16 @@ public class UnLockItem extends AbstractItem {
   @Override
   public ItemProvider getItemProvider() {
     ItemBuilder item = new ItemBuilder(Material.ENDER_CHEST).setDisplayName(
-        "" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[Unlock]" + ChatColor.RESET
+        "" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "Unlock" + ChatColor.RESET
     );
     if (clicked)
-      item.addLoreLines(ChatColor.RED + "Click again to unlock.");
+      item.addLoreLines(message.click_again.apply());
     return item;
   }
 
   @Override
-  public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
+  public void handleClick(@NotNull ClickType clickType, @NotNull Player player,
+      @NotNull InventoryClickEvent event) {
     if (clicked) {
       player.closeInventory();
       LockResult result = handler.unlock(player, location);

@@ -43,11 +43,12 @@ public class HolderMenuGUI extends GUI {
       lock_item = new ProtectItem(player, location, "Lock", caches.getLockUICache());
     } else {
       // locked
-      if(handler.isOwner(player, data)){
+      if (handler.isOwner(player, data)) {
         lock_item = new UnLockItem(player, location);
         extend_item = new ProtectItem(player, location, "Extend", caches.getExtendUICache());
-      }else{
-        lock_item = new SimpleItem(new ItemBuilder(Material.BARRIER).setDisplayName("You are not owner."));
+      } else {
+        lock_item = new SimpleItem(
+            new ItemBuilder(Material.BARRIER).setDisplayName(message.not_your_chest.apply()));
       }
     }
 

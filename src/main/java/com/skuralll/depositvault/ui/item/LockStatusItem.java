@@ -1,6 +1,7 @@
 package com.skuralll.depositvault.ui.item;
 
 import com.skuralll.depositvault.DepositVault;
+import com.skuralll.depositvault.config.MessageConfig;
 import com.skuralll.depositvault.handler.LockHandler;
 import com.skuralll.depositvault.model.LockData;
 import com.skuralll.depositvault.utils.Utils;
@@ -44,14 +45,20 @@ public class LockStatusItem extends AsyncItem {
               }
               // set meta
               ItemMeta meta = item.getItemMeta();
-              meta.setDisplayName("" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[Status]" + ChatColor.RESET);
+              meta.setDisplayName(
+                  "" + ChatColor.RESET + ChatColor.YELLOW + ChatColor.BOLD + "[Status]"
+                      + ChatColor.RESET);
               ArrayList<String> lores = new ArrayList<>();
-              lores.add(ChatColor.YELLOW + "Locked: " + ChatColor.RESET + (data == null ? "False" : "True" + " (ID:" + data.getLockId() + ")"));
+              lores.add(ChatColor.YELLOW + "Locked: " + ChatColor.RESET + (data == null ? "False"
+                  : "True" + " (ID:" + data.getLockId() + ")"));
               if (data != null) {
                 int user_id = data.getUserId();
                 String user_name = handler.getUserName(user_id);
-                lores.add(ChatColor.YELLOW + "Owner: " + ChatColor.RESET + (user_name == null ? "UNKNOWN" : user_name) + " (ID:" + user_id + ")");
-                lores.add(ChatColor.YELLOW + "Expiration: " + ChatColor.RESET + data.getExpireDate().toString());
+                lores.add(
+                    ChatColor.YELLOW + "Owner: " + ChatColor.RESET + (user_name == null ? "UNKNOWN"
+                        : user_name) + " (ID:" + user_id + ")");
+                lores.add(ChatColor.YELLOW + "Expiration: " + ChatColor.RESET + data.getExpireDate()
+                    .toString());
               }
               meta.setLore(lores);
               item.setItemMeta(meta);
@@ -64,6 +71,7 @@ public class LockStatusItem extends AsyncItem {
   }
 
   @Override
-  public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
+  public void handleClick(@NotNull ClickType clickType, @NotNull Player player,
+      @NotNull InventoryClickEvent event) {
   }
 }

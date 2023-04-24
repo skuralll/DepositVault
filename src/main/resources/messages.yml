@@ -1,6 +1,7 @@
 ## meta
 version: 1
 ## messages
+# messages
 please_click: '&eRight click on the chest'
 command_usage: 'Usage: {command}'
 time_is_out_of_range: '&cTime is out of range. Max time is {time}{unit}s.'
@@ -15,3 +16,6 @@ locked: '&cThis chest is locked.'
 not_your_chest: '&cThis is not your chest.'
 max_expiration: '&cYou have exceeded the maximum expiration time.'
 sql_error: '&cSQL error occurred'
+enter_the_time: 'Please enter the time in the chat.'
+click_again: '&cPlease click again.'
+loading: '&eLoading...'

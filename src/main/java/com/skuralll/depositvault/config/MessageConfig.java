@@ -24,6 +24,9 @@ public class MessageConfig {
   public final TemplateParser not_your_chest;
   public final TemplateParser max_expiration;
   public final TemplateParser sql_error;
+  public final TemplateParser enter_the_time;
+  public final TemplateParser click_again;
+  public final TemplateParser loading;
 
   public MessageConfig(ConfigurationSection config) {
     version = config.getInt("version");
@@ -42,6 +45,9 @@ public class MessageConfig {
     not_your_chest = parse(config.getString("not_your_chest"));
     max_expiration = parse(config.getString("max_expiration"));
     sql_error = parse(config.getString("sql_error"));
+    enter_the_time = parse(config.getString("enter_the_time"));
+    click_again = parse(config.getString("click_again"));
+    loading = parse(config.getString("loading"));
   }
 
   private TemplateParser parse(String value) {
